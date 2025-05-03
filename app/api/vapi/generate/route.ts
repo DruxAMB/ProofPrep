@@ -23,7 +23,7 @@ export async function POST(request: Request) {
         
         Thank you! <3
     `,
-    });
+    }); 
 
     const interview = {
       role: role,
