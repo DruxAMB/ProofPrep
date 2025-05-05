@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { Button } from "./ui/button";
+import LoadingLink from "./ui/loading-link";
 import DisplayTechIcons from "./DisplayTechIcons";
 
 import { cn, getRandomInterviewCover } from "@/lib/utils";
@@ -91,17 +92,13 @@ const InterviewCard = async ({
         <div className="flex flex-row justify-between">
           <DisplayTechIcons techStack={techstack} />
 
-          <Button className="btn-primary">
-            <Link
-              href={
-                feedback
-                  ? `/interview/${interviewId}/feedback`
-                  : `/interview/${interviewId}`
-              }
-            >
-              {feedback ? "Check Feedback" : "View Interview"}
-            </Link>
-          </Button>
+          <LoadingLink 
+            href={feedback ? `/interview/${interviewId}/feedback` : `/interview/${interviewId}`}
+            className="btn-primary"
+            loadingText={feedback ? "Loading Feedback..." : "Loading Interview..."}
+          >
+            {feedback ? "Check Feedback" : "View Interview"}
+          </LoadingLink>
         </div>
       </div>
     </div>
