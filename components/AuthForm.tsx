@@ -55,11 +55,15 @@ const AuthForm = ({ type }: { type: FormType }) => {
           password
         );
 
+        // Generate a default profile image URL based on the user's name
+        const profileImage = `https://ui-avatars.com/api/?name=${encodeURIComponent(name!.trim())}&background=0D8ABC&color=fff&size=128&bold=true`;
+        
         const result = await signUp({
           uid: userCredential.user.uid,
           name: name!,
           email,
           password,
+          profileImage,
         });
 
         if (!result.success) {

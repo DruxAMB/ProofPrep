@@ -36,6 +36,7 @@ interface User {
   name: string;
   email: string;
   id: string;
+  profileImage?: string;
 }
 
 interface InterviewCardProps {
@@ -54,6 +55,7 @@ interface AgentProps {
   feedbackId?: string;
   type: "generate" | "interview";
   questions?: string[];
+  profileImage?: string;
 }
 
 interface RouteParams {
@@ -81,6 +83,7 @@ interface SignUpParams {
   name: string;
   email: string;
   password: string;
+  profileImage?: string;
 }
 
 type FormType = "sign-in" | "sign-up";

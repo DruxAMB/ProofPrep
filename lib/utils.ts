@@ -45,3 +45,14 @@ export const getRandomInterviewCover = () => {
   const randomIndex = Math.floor(Math.random() * interviewCovers.length);
   return `/covers${interviewCovers[randomIndex]}`;
 };
+
+/**
+ * Generates a default profile image URL using the UI Avatars service
+ * @param name User's name to generate an avatar from
+ * @returns URL to a generated avatar image
+ */
+export const generateDefaultProfileImage = (name: string): string => {
+  // Using UI Avatars service to generate avatars from initials
+  const formattedName = encodeURIComponent(name.trim());
+  return `https://ui-avatars.com/api/?name=${formattedName}&background=0D8ABC&color=fff&size=128&bold=true`;
+};
