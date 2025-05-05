@@ -40,7 +40,7 @@ async function Home() {
         </div>
 
         <Image
-          src="/robot.png"
+          src="/robot.gif"
           alt="robo-dude"
           width={400}
           height={400}

@@ -10,17 +10,17 @@
   --color-destructive-100: #f75353;
   --color-destructive-200: #c44141;
 
-  --color-primary-100: #d0ffd0;
-  --color-primary-200: #a3e8a3;
+  --color-primary-100: #b8e8f0;
+  --color-primary-200: #65bdcc;
 
-  --color-light-100: #e0ffe0;
-  --color-light-400: #68a670;
-  --color-light-600: #4f7d55;
-  --color-light-800: #24372a;
+  --color-light-100: #d9f2f6;
+  --color-light-400: #65bdcc;
+  --color-light-600: #4a9caa;
+  --color-light-800: #2a5c66;
 
-  --color-dark-100: #020802;
-  --color-dark-200: #272f28;
-  --color-dark-300: #243326;
+  --color-dark-100: #020808;
+  --color-dark-200: #272f33;
+  --color-dark-300: #243339;
 
   --font-mona-sans: "Mona Sans", sans-serif;
 
@@ -217,11 +217,11 @@
     }
 
     .card-interviewer {
-      @apply flex-center flex-col gap-2 p-7 h-[400px] green-gradient-dark rounded-lg border-2 border-primary-200/50 flex-1 sm:basis-1/2 w-full;
+      @apply flex-center flex-col gap-2 p-7 h-[400px] teal-gradient-dark rounded-lg border-2 border-primary-200/50 flex-1 sm:basis-1/2 w-full;
     }
 
     .avatar {
-      @apply z-10 flex items-center justify-center green-gradient rounded-full size-[120px] relative;
+      @apply z-10 flex items-center justify-center teal-gradient rounded-full size-[120px] relative;
 
       .animate-speak {
         @apply absolute inline-flex size-5/6 animate-ping rounded-full bg-primary-200 opacity-75;
@@ -266,7 +266,7 @@
   }
 
   .card-cta {
-    @apply flex flex-row green-gradient-dark rounded-3xl px-16 py-6 items-center justify-between max-sm:px-4;
+    @apply flex flex-row teal-gradient-dark rounded-3xl px-16 py-6 items-center justify-between max-sm:px-4;
   }
 
   .interviews-section {
@@ -306,12 +306,12 @@
   @apply bg-[url('/pattern.png')] bg-top bg-no-repeat;
 }
 
-@utility green-gradient-dark {
-  @apply bg-gradient-to-b from-[#153217] to-[#08090D];
+@utility teal-gradient-dark {
+  @apply bg-gradient-to-b from-[#1a4a54] to-[#08090D];
 }
 
-@utility green-gradient {
-  @apply bg-gradient-to-l from-[#FFFFFF] to-[#a3e8a3];
+@utility teal-gradient {
+  @apply bg-gradient-to-l from-[#FFFFFF] to-[#65bdcc];
 }
 
 @utility flex-center {
