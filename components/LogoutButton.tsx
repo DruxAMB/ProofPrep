@@ -31,7 +31,7 @@ const LogoutButton = () => {
       onClick={handleLogout}
       variant="ghost"
       size="sm"
-      className="text-primary-100 hover:text-primary-200 hover:bg-dark-200/50"
+      className="text-primary-100 hover:text-primary-200 hover:bg-dark-200/50 cursor-pointer"
       disabled={isLoading}
     >
       {isLoading ? (
