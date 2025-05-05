@@ -1,7 +1,5 @@
-import Link from "next/link";
 import Image from "next/image";
 
-import { Button } from "@/components/ui/button";
 import LoadingLink from "@/components/ui/loading-link";
 import InterviewCard from "@/components/InterviewCard";
 
@@ -16,22 +14,26 @@ async function Home() {
 
   // Only fetch interviews if user is authenticated and has an ID
   const userInterviews = user?.id ? await getInterviewsByUserId(user.id) : [];
-  const allInterview = user?.id ? await getLatestInterviews({ userId: user.id }) : [];
+  const allInterview = user?.id
+    ? await getLatestInterviews({ userId: user.id })
+    : [];
 
-  const hasPastInterviews = (userInterviews && userInterviews.length > 0) || false;
-  const hasUpcomingInterviews = (allInterview && allInterview.length > 0) || false;
+  const hasPastInterviews =
+    (userInterviews && userInterviews.length > 0) || false;
+  const hasUpcomingInterviews =
+    (allInterview && allInterview.length > 0) || false;
 
   return (
     <>
       <section className="card-cta">
         <div className="flex flex-col gap-6 max-w-lg">
-          <h2>Get Interview-Ready with AI-Powered Practice & Feedback</h2>
+          <h2>Nail Every Interview with AI Practice & Instant Feedback</h2>
           <p className="text-lg">
-            Practice real interview questions & get instant feedback
+            Practice Real Questions. Get Instant Feedback. Land the Job.
           </p>
 
-          <LoadingLink 
-            href="/interview" 
+          <LoadingLink
+            href="/interview"
             className="btn-primary max-sm:w-full"
             loadingText="Loading Interview..."
           >
