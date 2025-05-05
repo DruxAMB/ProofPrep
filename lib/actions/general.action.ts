@@ -92,8 +92,11 @@ export async function getFeedbackByInterviewId(
 
 export async function getLatestInterviews(
   params: GetLatestInterviewsParams
-): Promise<Interview[] | null> {
+): Promise<Interview[]> {
   const { userId, limit = 20 } = params;
+
+  // Return empty array if userId is undefined
+  if (!userId) return [];
 
   const interviews = await db
     .collection("interviews")
@@ -110,8 +113,11 @@ export async function getLatestInterviews(
 }
 
 export async function getInterviewsByUserId(
-  userId: string
-): Promise<Interview[] | null> {
+  userId: string | undefined
+): Promise<Interview[]> {
+  // Return empty array if userId is undefined
+  if (!userId) return [];
+  
   const interviews = await db
     .collection("interviews")
     .where("userId", "==", userId)

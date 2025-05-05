@@ -13,13 +13,12 @@ import {
 async function Home() {
   const user = await getCurrentUser();
 
-  const [userInterviews, allInterview] = await Promise.all([
-    getInterviewsByUserId(user?.id!),
-    getLatestInterviews({ userId: user?.id! }),
-  ]);
+  // Only fetch interviews if user is authenticated and has an ID
+  const userInterviews = user?.id ? await getInterviewsByUserId(user.id) : [];
+  const allInterview = user?.id ? await getLatestInterviews({ userId: user.id }) : [];
 
-  const hasPastInterviews = userInterviews?.length! > 0;
-  const hasUpcomingInterviews = allInterview?.length! > 0;
+  const hasPastInterviews = (userInterviews && userInterviews.length > 0) || false;
+  const hasUpcomingInterviews = (allInterview && allInterview.length > 0) || false;
 
   return (
     <>
