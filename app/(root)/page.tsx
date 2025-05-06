@@ -56,8 +56,8 @@ async function Home() {
           <div className="flex items-center justify-between mb-4">
             <h2>Interviews</h2>
             <TabsList>
-              <TabsTrigger value="your-interviews">Your Interviews</TabsTrigger>
-              <TabsTrigger value="take-interviews">Take Interviews</TabsTrigger>
+              <TabsTrigger value="your-interviews" className="cursor-pointer">Your Interviews</TabsTrigger>
+              <TabsTrigger value="take-interviews" className="cursor-pointer">Take Interviews</TabsTrigger>
             </TabsList>
           </div>
           
