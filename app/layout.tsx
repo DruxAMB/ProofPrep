@@ -1,8 +1,9 @@
 import { Toaster } from "sonner";
 import type { Metadata } from "next";
 import { Mona_Sans } from "next/font/google";
-
+import { Providers } from '@/components/providers/wallet-provider';
 import "./globals.css";
+import '@coinbase/onchainkit/styles.css';
 
 const monaSans = Mona_Sans({
   variable: "--font-mona-sans",
@@ -22,8 +23,10 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={`${monaSans.className} antialiased pattern`}>
-        {children}
-        <Toaster />
+        <Providers>
+            {children}
+            <Toaster />
+        </Providers>
       </body>
     </html>
   );

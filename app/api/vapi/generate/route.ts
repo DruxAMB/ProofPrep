@@ -2,7 +2,6 @@ import { generateText } from "ai";
 import { google } from "@ai-sdk/google";
 
 import { db } from "@/firebase/admin";
-import { getRandomInterviewCover } from "@/lib/utils";
 
 export async function POST(request: Request) {
   const { type, role, level, techstack, amount, userid } = await request.json();
@@ -33,7 +32,7 @@ export async function POST(request: Request) {
       questions: JSON.parse(questions),
       userId: userid,
       finalized: true,
-      coverImage: getRandomInterviewCover(),
+      coverImage: "",
       createdAt: new Date().toISOString(),
     };
 

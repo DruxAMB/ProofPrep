@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { ArrowLeft, RefreshCw, Star, Calendar, Award, TrendingUp, AlertTriangle } from "lucide-react";
+import { ArrowLeft, Star, Calendar, Award, TrendingUp, AlertTriangle } from "lucide-react";
 
 import {
   getFeedbackByInterviewId,
