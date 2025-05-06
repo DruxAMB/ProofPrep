@@ -1,6 +1,5 @@
 import dayjs from "dayjs";
 import Link from "next/link";
-import Image from "next/image";
 import { redirect } from "next/navigation";
 import { ArrowLeft, RefreshCw, Star, Calendar, Award, TrendingUp, AlertTriangle } from "lucide-react";
 
@@ -11,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { getCurrentUser } from "@/lib/actions/auth.action";
 import { cn } from "@/lib/utils";
+import LoadingButton from "@/components/ui/loading-button";
 
 // Helper function to get score color class based on score value
 const getScoreColorClass = (score: number) => {
@@ -168,19 +168,21 @@ const Feedback = async ({ params }: RouteParams) => {
       
       {/* Action Buttons */}
       <div className="flex flex-col sm:flex-row gap-4 pt-4">
-        <Link href="/" className="flex-1">
-          <Button variant="outline" className="w-full group hover:bg-dark-200/50">
-            <ArrowLeft className="mr-2 h-4 w-4 text-primary-200 group-hover:text-primary-100" />
-            <span className="font-medium">Back to Dashboard</span>
-          </Button>
-        </Link>
+        <LoadingButton 
+          href="/"
+          iconType="arrowLeft"
+          text="Back to Dashboard"
+          variant="outline"
+          className="group hover:bg-dark-200/50"
+          iconClassName="text-primary-200 group-hover:text-primary-100"
+        />
         
-        <Link href={`/interview/${id}`} className="flex-1">
-          <Button className="w-full bg-primary-200 hover:bg-primary-100 text-dark-100">
-            <RefreshCw className="mr-2 h-4 w-4" />
-            <span className="font-medium">Retake Interview</span>
-          </Button>
-        </Link>
+        <LoadingButton 
+          href={`/interview/${id}`}
+          iconType="refreshCw"
+          text="Retake Interview"
+          className="bg-primary-200 hover:bg-primary-100 text-dark-100"
+        />
       </div>
     </section>
   );
