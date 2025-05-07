@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import { Providers } from '@/components/providers/wallet-provider';
 import "./globals.css";
-import '@coinbase/onchainkit/styles.css';
+// import '@coinbase/onchainkit/styles.css';
 
 const outfit = Outfit({
   subsets: ['latin'],

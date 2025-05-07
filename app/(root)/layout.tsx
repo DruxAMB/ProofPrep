@@ -4,6 +4,7 @@ import { ReactNode } from "react";
 import { redirect } from "next/navigation";
 
 import LogoutButton from "@/components/LogoutButton";
+import { SettingsModal } from "@/components/settings-modal";
 
 import { isAuthenticated } from "@/lib/actions/auth.action";
 
@@ -19,7 +20,10 @@ const Layout = async ({ children }: { children: ReactNode }) => {
           <h2 className="text-primary-100">ProofPrep</h2>
         </Link>
         
-        <LogoutButton />
+        <div className="flex items-center gap-1">
+          <SettingsModal />
+          <LogoutButton />
+        </div>
       </nav>
 
       {children}
