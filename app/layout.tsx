@@ -1,13 +1,20 @@
 import { Toaster } from "sonner";
 import type { Metadata } from "next";
-import { Mona_Sans } from "next/font/google";
+import { Inter, Outfit } from "next/font/google";
 import { Providers } from '@/components/providers/wallet-provider';
-import '@coinbase/onchainkit/styles.css';
 import "./globals.css";
+// import '@coinbase/onchainkit/styles.css';
 
-const monaSans = Mona_Sans({
-  variable: "--font-mona-sans",
-  subsets: ["latin"],
+const inter = Inter({ 
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+});
+
+const outfit = Outfit({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-outfit',
 });
 
 export const metadata: Metadata = {
@@ -22,7 +29,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`${monaSans.className} antialiased pattern`}>
+      <body className={`${outfit.className} antialiased pattern`}>
         <Providers>
             {children}
             <Toaster />
