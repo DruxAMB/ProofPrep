@@ -1,15 +1,9 @@
 import { Toaster } from "sonner";
 import type { Metadata } from "next";
-import { Inter, Outfit } from "next/font/google";
+import { Outfit } from "next/font/google";
 import { Providers } from '@/components/providers/wallet-provider';
 import "./globals.css";
-// import '@coinbase/onchainkit/styles.css';
-
-const inter = Inter({ 
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-inter',
-});
+import '@coinbase/onchainkit/styles.css';
 
 const outfit = Outfit({
   subsets: ['latin'],
