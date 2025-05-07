@@ -1,7 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { Settings, User, Wallet as WalletIcon, Shield, X } from "lucide-react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Settings, User, Wallet as WalletIcon, Shield, X, LogOut } from "lucide-react";
+import { toast } from "sonner";
 import {
   ConnectWallet,
   Wallet,
@@ -20,10 +23,28 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import { signOut } from "@/lib/actions/auth.action";
 
 export function SettingsModal() {
-  const [activeTab, setActiveTab] = React.useState<'profile' | 'wallet' | 'achievements'>('profile');
+  const router = useRouter();
+  const [activeTab, setActiveTab] = React.useState<'profile' | 'wallet' | 'achievements' | 'account'>('profile');
   const [open, setOpen] = React.useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const handleLogout = async () => {
+    try {
+      setIsLoading(true);
+      await signOut();
+      setOpen(false);
+      toast.success("Logged out successfully");
+      router.push("/sign-in");
+    } catch (error) {
+      console.error("Logout error:", error);
+      toast.error("Failed to log out. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
   
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -33,7 +54,7 @@ export function SettingsModal() {
           <span className="sr-only">Settings</span>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[90vw] max-w-[500px] p-0 bg-dark-200/95 backdrop-blur-md border-dark-300/50 shadow-xl" align="end">
+      <PopoverContent className="w-[90vw] max-w-[410px] p-0 bg-dark-200/95 backdrop-blur-md border-dark-300/50 shadow-xl" align="end">
         <div className="max-h-[80vh] overflow-y-auto">
           <div className="p-4">
             {/* Header */}
@@ -114,6 +135,35 @@ export function SettingsModal() {
                           <p className="text-light-200 text-base font-medium">Profile settings coming soon</p>
                           <p className="text-light-300 text-xs mt-1">Customize your profile and preferences</p>
                         </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                  <CardContent className="pt-4">
+                    <div className="space-y-4">
+                      <div className="flex flex-col">
+                        <h3 className="text-sm font-medium mb-2">Session</h3>
+                        <p className="text-light-300 text-xs mb-4">
+                          Sign out from your current session
+                        </p>
+                        <Button
+                          onClick={handleLogout}
+                          variant="destructive"
+                          size="sm"
+                          className="w-full cursor-pointer"
+                          disabled={isLoading}
+                        >
+                          {isLoading ? (
+                            <>
+                              <span className="animate-spin mr-2 inline-block size-4 border-2 border-current border-t-transparent rounded-full" aria-hidden="true"></span>
+                              Logging out...
+                            </>
+                          ) : (
+                            <>
+                              <LogOut className="mr-2 h-4 w-4" />
+                              Logout
+                            </>
+                          )}
+                        </Button>
                       </div>
                     </div>
                   </CardContent>
