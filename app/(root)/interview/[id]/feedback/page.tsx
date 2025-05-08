@@ -7,7 +7,6 @@ import {
   getFeedbackByInterviewId,
   getInterviewById,
 } from "@/lib/actions/general.action";
-import { Button } from "@/components/ui/button";
 import { getCurrentUser } from "@/lib/actions/auth.action";
 import { cn } from "@/lib/utils";
 import LoadingButton from "@/components/ui/loading-button";
@@ -39,7 +38,7 @@ const Feedback = async ({ params }: RouteParams) => {
 
   const feedback = await getFeedbackByInterviewId({
     interviewId: id,
-    userId: user?.id!,
+    userId: user?.id || '',
   });
 
   const totalScore = feedback?.totalScore || 0;
@@ -97,7 +96,7 @@ const Feedback = async ({ params }: RouteParams) => {
         
         {/* Final Assessment */}
         <div className="mt-6 p-4 bg-dark-300/30 rounded-lg border-l-4 border-primary-200">
-          <p className="text-light-100 italic">"{feedback?.finalAssessment}"</p>
+          <p className="text-light-100 italic">&ldquo;{feedback?.finalAssessment}&rdquo;</p>
         </div>
       </div>
       

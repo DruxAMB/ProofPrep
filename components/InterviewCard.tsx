@@ -1,5 +1,4 @@
 import dayjs from "dayjs";
-import Link from "next/link";
 import Image from "next/image";
 
 import LoadingLink from "./ui/loading-link";
