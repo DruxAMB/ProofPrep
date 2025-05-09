@@ -54,7 +54,7 @@ const Feedback = async ({ params }: RouteParams) => {
         <Link href="/" className="hover:opacity-80 transition-opacity">
           <ArrowLeft className="h-6 w-6 text-primary-200" />
         </Link>
-        <h1 className="text-3xl font-bold">
+        <h1 className="text-xl md:text-3xl font-bold">
           <span className="capitalize">{interview.role}</span> Interview Feedback
         </h1>
       </div>
