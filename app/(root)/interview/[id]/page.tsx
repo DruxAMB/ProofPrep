@@ -24,10 +24,10 @@ const InterviewDetails = async ({ params }: RouteParams) => {
 
   return (
     <>
-      <div className="flex flex-row gap-4 justify-between">
-        <div className="flex flex-row gap-4 items-center max-sm:flex-col">
+      <div className="flex flex-row gap-1 justify-between">
+        <div className="flex flex-row gap-1 md:gap-4 items-center">
           <div className="flex flex-row gap-4 items-center">
-            <h3 className="capitalize">{interview.role} Interview</h3>
+            <h3 className="capitalize text-xl md:text-2xl">{interview.role} Interview</h3>
           </div>
 
           <DisplayTechIcons techStack={interview.techstack} />

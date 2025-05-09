@@ -6,7 +6,7 @@ const Page = async () => {
 
   return (
     <>
-      <h3>Interview generation</h3>
+      <h3 className="capitalize text-xl md:text-2xl">Interview generation</h3>
 
       <Agent
         userName={user?.name || "User"}
