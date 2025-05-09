@@ -213,7 +213,7 @@ export function SettingsModal() {
                             <Avatar className="h-6 w-6" />
                             <Name className="text-dark-100"/>
                           </ConnectWallet>
-                          {/* <WalletDropdown>
+                          <WalletDropdown>
                             <Identity
                               className="px-4 pt-3 pb-2 hover:bg-primary-200/80"
                               hasCopyAddressOnClick
@@ -224,7 +224,7 @@ export function SettingsModal() {
                               <EthBalance />
                             </Identity>
                             <WalletDropdownDisconnect className='hover:bg-primary-200/80' />
-                          </WalletDropdown> */}
+                          </WalletDropdown>
                         </Wallet>
                       </div>
                     </div>
