@@ -13,6 +13,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from "firebase/auth";
 
 import { Form } from "@/components/ui/form";
@@ -32,6 +34,7 @@ const authFormSchema = (type: FormType) => {
 const AuthForm = ({ type }: { type: FormType }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
   const formSchema = authFormSchema(type);
   const form = useForm<z.infer<typeof formSchema>>({
@@ -62,7 +65,6 @@ const AuthForm = ({ type }: { type: FormType }) => {
           uid: userCredential.user.uid,
           name: name!,
           email,
-          password,
           profileImage,
         });
 
@@ -104,6 +106,56 @@ const AuthForm = ({ type }: { type: FormType }) => {
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    setIsGoogleLoading(true);
+    try {
+      const provider = new GoogleAuthProvider();
+      const userCredential = await signInWithPopup(auth, provider);
+      const user = userCredential.user;
+      
+      // Get the user's ID token
+      const idToken = await user.getIdToken();
+      if (!idToken) {
+        toast.error("Google sign in failed. Please try again.");
+        return;
+      }
+
+      // For sign up, we need to check if the user exists and create if not
+      if (type === "sign-up") {
+        const result = await signUp({
+          uid: user.uid,
+          name: user.displayName || "Google User",
+          email: user.email!,
+          profileImage: user.photoURL || undefined,
+        });
+
+        if (!result.success && !result.message.includes("already exists")) {
+          toast.error(result.message);
+          return;
+        }
+      }
+
+      // Sign in the user
+      await signIn({
+        email: user.email!,
+        idToken,
+      });
+
+      toast.success("Signed in with Google successfully.");
+      router.push("/");
+    } catch (error: any) {
+      console.error("Google sign in error:", error);
+      // Handle specific Firebase auth errors
+      if (error.code === "auth/popup-closed-by-user") {
+        toast.error("Sign in cancelled. Please try again.");
+      } else {
+        toast.error(`Google sign in failed: ${error.message || error}`);
+      }
+    } finally {
+      setIsGoogleLoading(false);
+    }
+  };
+
   const isSignIn = type === "sign-in";
 
   return (
@@ -114,7 +166,7 @@ const AuthForm = ({ type }: { type: FormType }) => {
           <h2 className="text-primary-100">ProofPrep</h2>
         </div>
 
-        <h3>Practice job interviews with AI</h3>
+        <h3 className="text-center">Practice job interviews with AI</h3>
 
         <Form {...form}>
           <form
@@ -155,6 +207,40 @@ const AuthForm = ({ type }: { type: FormType }) => {
                 </>
               ) : (
                 isSignIn ? "Sign In" : "Create an Account"
+              )}
+            </Button>
+
+            <div className="relative my-4">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-dark-300"></div>
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-dark-100 px-2 text-light-300">Or continue with</span>
+              </div>
+            </div>
+
+            <Button 
+              type="button" 
+              variant="outline" 
+              className="w-full flex items-center justify-center gap-2 cursor-pointer" 
+              onClick={handleGoogleSignIn}
+              disabled={isGoogleLoading}
+            >
+              {isGoogleLoading ? (
+                <>
+                  <span className="animate-spin inline-block size-4 border-2 border-current border-t-transparent rounded-full" aria-hidden="true"></span>
+                  <span>Connecting to Google...</span>
+                </>
+              ) : (
+                <>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="24px" height="24px">
+                    <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/>
+                    <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/>
+                    <path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/>
+                    <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/>
+                  </svg>
+                  <span>Sign {isSignIn ? "in" : "up"} with Google</span>
+                </>
               )}
             </Button>
           </form>
