@@ -200,7 +200,7 @@ export function SettingsModal() {
                   </CardHeader>
                   <Separator className="bg-dark-300/30" />
                   <CardContent className="pt-4">
-                    <div className="flex items-center justify-between">
+                    <div className="md:flex items-center justify-between">
                       <div>
                         <h3 className="font-medium text-sm">Connection Status</h3>
                         <p className="text-light-300 text-xs mt-1">

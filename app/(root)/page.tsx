@@ -54,7 +54,7 @@ async function Home() {
 
       <section className="flex flex-col gap-6 mt-8">
         <Tabs defaultValue="your-interviews" className="w-full">
-          <div className="flex items-center justify-between mb-4">
+          <div className="md:flex items-center justify-between mb-4">
             <h2>Interviews</h2>
             <TabsList>
               <TabsTrigger value="your-interviews" className="cursor-pointer">Your Interviews</TabsTrigger>
