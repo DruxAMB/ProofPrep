@@ -168,7 +168,7 @@ export function SettingsModal() {
                           onClick={handleLogout}
                           variant="destructive"
                           size="sm"
-                          className="w-full cursor-pointer"
+                          className="w-full backdrop-blur-lg cursor-pointer"
                           disabled={isLoading}
                         >
                           {isLoading ? (

@@ -60,7 +60,7 @@ const Feedback = async ({ params }: RouteParams) => {
       </div>
       
       {/* Summary Card */}
-      <div className="card-border p-6 rounded-xl bg-dark-200/30 backdrop-blur-sm">
+      <div className="p-6 rounded-xl bg-dark-200/30 backdrop-blur-sm">
         <div className="flex flex-col md:flex-row justify-between gap-6">
           {/* Score Section */}
           <div className="flex-1 flex flex-col items-center justify-center p-4 bg-dark-300/50 rounded-lg">
@@ -110,7 +110,7 @@ const Feedback = async ({ params }: RouteParams) => {
           {feedback?.categoryScores?.map((category, index) => {
             const { width, colorClass } = getProgressStyle(category.score);
             return (
-              <div key={index} className="card-border p-4 rounded-lg bg-dark-200/30">
+              <div key={index} className="p-4 rounded-lg bg-dark-200/30">
                 <div className="flex justify-between items-center mb-2">
                   <h3 className="font-medium">{category.name}</h3>
                   <span className={cn("font-bold", getScoreColorClass(category.score))}>
@@ -133,7 +133,7 @@ const Feedback = async ({ params }: RouteParams) => {
       {/* Strengths and Areas for Improvement */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Strengths */}
-        <div className="card-border p-5 rounded-xl bg-dark-200/30 backdrop-blur-sm">
+        <div className="p-5 rounded-xl bg-dark-200/30 backdrop-blur-sm">
           <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
             <Star className="h-5 w-5 text-green-500" />
             Strengths
@@ -149,7 +149,7 @@ const Feedback = async ({ params }: RouteParams) => {
         </div>
         
         {/* Areas for Improvement */}
-        <div className="card-border p-5 rounded-xl bg-dark-200/30 backdrop-blur-sm">
+        <div className="p-5 rounded-xl bg-dark-200/30 backdrop-blur-sm">
           <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
             <AlertTriangle className="h-5 w-5 text-yellow-500" />
             Areas for Improvement
