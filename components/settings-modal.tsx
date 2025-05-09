@@ -73,7 +73,7 @@ export function SettingsModal() {
           <span className="sr-only">Settings</span>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[90vw] max-w-[410px] p-0 bg-dark-200/95 backdrop-blur-md border-dark-300/50 shadow-xl" align="end">
+      <PopoverContent className="w-[90vw] max-w-[410px] p-0 bg-gradient-to-b from-[#1a4a54]/95 to-[#08090D]/80 backdrop-blur-md border-primary-300/50 shadow-xl" align="end">
         <div className="max-h-[80vh] overflow-y-auto">
           <div className="p-4">
             {/* Header */}
@@ -213,7 +213,7 @@ export function SettingsModal() {
                             <Avatar className="h-6 w-6" />
                             <Name className="text-dark-100"/>
                           </ConnectWallet>
-                          <WalletDropdown>
+                          {/* <WalletDropdown>
                             <Identity
                               className="px-4 pt-3 pb-2 hover:bg-primary-200/80"
                               hasCopyAddressOnClick
@@ -224,7 +224,7 @@ export function SettingsModal() {
                               <EthBalance />
                             </Identity>
                             <WalletDropdownDisconnect className='hover:bg-primary-200/80' />
-                          </WalletDropdown>
+                          </WalletDropdown> */}
                         </Wallet>
                       </div>
                     </div>
