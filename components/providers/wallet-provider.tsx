@@ -5,9 +5,12 @@ import { OnchainKitProvider } from '@coinbase/onchainkit';
 import { baseSepolia } from 'wagmi/chains'; // add baseSepolia for testing 
  
 export function Providers(props: { children: ReactNode }) {
+  // Get the API key and remove any trailing semicolon
+  const apiKey = process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY?.replace(';', '');
+  
   return (
     <OnchainKitProvider
-      apiKey={process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY} 
+      apiKey={apiKey} 
       chain={baseSepolia} 
       config={{
         appearance: {

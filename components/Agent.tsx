@@ -163,6 +163,7 @@ const Agent = ({
               width={100}
               height={100}
               className="object-cover"
+              unoptimized
             />
             {isSpeaking && <span className="animate-speak" />}
           </div>

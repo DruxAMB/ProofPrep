@@ -143,13 +143,15 @@ const AuthForm = ({ type }: { type: FormType }) => {
 
       toast.success("Signed in with Google successfully.");
       router.push("/");
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Google sign in error:", error);
       // Handle specific Firebase auth errors
-      if (error.code === "auth/popup-closed-by-user") {
+      if (error instanceof Error && 'code' in error && error.code === "auth/popup-closed-by-user") {
         toast.error("Sign in cancelled. Please try again.");
+      } else if (error instanceof Error) {
+        toast.error(`Google sign in failed: ${error.message}`);
       } else {
-        toast.error(`Google sign in failed: ${error.message || error}`);
+        toast.error("Google sign in failed. Please try again.");
       }
     } finally {
       setIsGoogleLoading(false);

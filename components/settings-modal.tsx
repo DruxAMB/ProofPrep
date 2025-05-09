@@ -27,24 +27,43 @@ import { signOut } from "@/lib/actions/auth.action";
 
 export function SettingsModal() {
   const router = useRouter();
-  const [activeTab, setActiveTab] = React.useState<'profile' | 'wallet' | 'achievements' | 'account'>('profile');
+  const [activeTab, setActiveTab] = React.useState<'profile' | 'wallet' | 'achievements'>('profile');
   const [open, setOpen] = React.useState(false);
   const [isLoading, setIsLoading] = useState(false);
   
+  // Use a ref to prevent unnecessary re-renders
+  const mountedRef = React.useRef(true);
+  
   const handleLogout = async () => {
+    if (!mountedRef.current) return;
+    
     try {
       setIsLoading(true);
       await signOut();
-      setOpen(false);
-      toast.success("Logged out successfully");
-      router.push("/sign-in");
+      
+      if (mountedRef.current) {
+        setOpen(false);
+        toast.success("Logged out successfully");
+        router.push("/sign-in");
+      }
     } catch (error) {
       console.error("Logout error:", error);
-      toast.error("Failed to log out. Please try again.");
+      if (mountedRef.current) {
+        toast.error("Failed to log out. Please try again.");
+      }
     } finally {
-      setIsLoading(false);
+      if (mountedRef.current) {
+        setIsLoading(false);
+      }
     }
   };
+  
+  // Cleanup effect
+  React.useEffect(() => {
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
   
   return (
     <Popover open={open} onOpenChange={setOpen}>
