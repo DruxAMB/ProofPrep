@@ -2,7 +2,7 @@
  
 import type { ReactNode } from 'react';
 import { OnchainKitProvider } from '@coinbase/onchainkit';
-import { baseSepolia } from 'wagmi/chains'; // add baseSepolia for testing 
+import { base } from 'wagmi/chains'; 
  
 export function Providers(props: { children: ReactNode }) {
   // Get the API key and remove any trailing semicolon
@@ -11,7 +11,7 @@ export function Providers(props: { children: ReactNode }) {
   return (
     <OnchainKitProvider
       apiKey={apiKey} 
-      chain={baseSepolia} 
+      chain={base} 
       config={{
         appearance: {
           name: 'ProofPrep',
