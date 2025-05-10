@@ -1,4 +1,6 @@
 @import "tailwindcss";
+/* @import '@coinbase/onchainkit/styles.css'; */
+
 
 @plugin "tailwindcss-animate";
 

@@ -1,9 +1,9 @@
+// import '@coinbase/onchainkit/styles.css';
 import { Toaster } from "sonner";
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
-import { Providers } from '@/components/providers/wallet-provider';
-// import '@coinbase/onchainkit/styles.css';
 import "./globals.css";
+import { Providers } from '@/components/providers/wallet-provider';
 
 const outfit = Outfit({
   subsets: ['latin'],
