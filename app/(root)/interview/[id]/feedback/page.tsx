@@ -1,5 +1,4 @@
 import dayjs from "dayjs";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { ArrowLeft, Star, Calendar, Award, TrendingUp, AlertTriangle } from "lucide-react";
 
@@ -10,6 +9,7 @@ import {
 import { getCurrentUser } from "@/lib/actions/auth.action";
 import { cn } from "@/lib/utils";
 import LoadingButton from "@/components/ui/loading-button";
+import LoadingLink from "@/components/ui/loading-link";
 
 // Helper function to get score color class based on score value
 const getScoreColorClass = (score: number) => {
@@ -51,9 +51,15 @@ const Feedback = async ({ params }: RouteParams) => {
     <section className="max-w-5xl mx-auto px-4 py-8 space-y-8">
       {/* Header with back button */}
       <div className="flex items-center gap-4 mb-6">
-        <Link href="/" className="hover:opacity-80 transition-opacity">
+        <LoadingLink 
+          href="/" 
+          variant="ghost" 
+          size="icon" 
+          className="p-0 hover:opacity-80 hover:bg-transparent transition-opacity"
+          loadingText="o"
+        >
           <ArrowLeft className="h-6 w-6 text-primary-200" />
-        </Link>
+        </LoadingLink>
         <h1 className="text-xl md:text-3xl font-bold">
           <span className="capitalize">{interview.role}</span> Interview Feedback
         </h1>
