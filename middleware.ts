@@ -1,5 +1,6 @@
 import { Address } from "viem";
 import { paymentMiddleware, Network, Resource } from "x402-next";
+import { facilitator } from "@coinbase/x402";
 
 const facilitatorUrl = process.env.NEXT_PUBLIC_FACILITATOR_URL as Resource;
 const payTo = process.env.RESOURCE_WALLET_ADDRESS as Address;
@@ -13,16 +14,14 @@ export const middleware = paymentMiddleware(
       network,
       config: {
         description: "Access to interview content",
-        customPaywallHtml: ""
       },
     },
   },
-  {
-    url: facilitatorUrl,
-  }
+  facilitator
 );
 
 // Configure which paths the middleware should run on
 export const config = {
+  runtime: "nodejs",
   matcher: ["/interview/:path*"],
 };
