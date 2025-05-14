@@ -33,7 +33,7 @@ const InterviewDetails = async ({ params }: RouteParams) => {
               href="/" 
               variant="ghost" 
               size="icon" 
-              className="p-0 hover:opacity-80 hover:bg-transparent transition-opacity"
+              className="p-0 hover:opacity-80 hover:bg-transparent transition-opacity cursor-pointer"
               loadingText="o"
             >
               <ArrowLeft className="h-6 w-6 text-primary-200" />
