@@ -1,7 +1,7 @@
 # ProofPrep
 
 <div align="center">
-  <img src="/public/logo.png" alt="ProofPrep Logo" width="200" />
+  <img src="/public/logo.svg" alt="ProofPrep Logo" width="200" />
   <h3>AI-Powered Interview Preparation Platform</h3>
   <p>Practice Real Questions. Get Instant Feedback. Land the Job.</p>
 </div>
@@ -109,56 +109,6 @@ ProofPrep is built with a modern tech stack:
 3. **Peer Review**: Allow users to share interview recordings for feedback from peers.
 4. **Advanced Analytics**: Provide deeper insights into performance patterns over time.
 5. **Mobile Application**: Develop native mobile apps for iOS and Android.
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js 18.x or higher
-- npm or yarn
-- Firebase account
-- Base Sepolia testnet for development
-
-### Installation
-
-1. Clone the repository
-   ```bash
-   git clone https://github.com/yourusername/proofprep.git
-   cd proofprep
-   ```
-
-2. Install dependencies
-   ```bash
-   npm install
-   # or
-   yarn install
-   ```
-
-3. Set up environment variables
-   Create a `.env.local` file with the following variables:
-   ```
-   # Firebase
-   NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
-   NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_auth_domain
-   NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
-   FIREBASE_CLIENT_EMAIL=your_client_email
-   FIREBASE_PRIVATE_KEY=your_private_key
-   
-   # x402 and Web3
-   NEXT_PUBLIC_ONCHAINKIT_API_KEY=your_api_key
-   RESOURCE_WALLET_ADDRESS=your_wallet_address
-   NEXT_PUBLIC_FACILITATOR_URL=https://x402.org/facilitator
-   NETWORK=base-sepolia
-   ```
-
-4. Run the development server
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   ```
-
-5. Open [http://localhost:3000](http://localhost:3000) in your browser
 
 ## Contributing
 
