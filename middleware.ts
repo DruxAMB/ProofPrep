@@ -5,7 +5,7 @@ import { customPaywallHtml } from "./lib/cutomPaywall";
 
 const payTo = process.env.RESOURCE_WALLET_ADDRESS as Address;
 const network = process.env.NETWORK as Network;
-const price = process.env.PRICE || "$1" // Usar la variable de entorno PRICE con fallback
+const price = process.env.PRICE || "$1";
 
 export const middleware = paymentMiddleware(
   payTo,
@@ -25,5 +25,8 @@ export const middleware = paymentMiddleware(
 // Configure which paths the middleware should run on
 export const config = {
   runtime: "nodejs",
-  matcher: ["/interview"],
+  matcher: [
+    // Only match the main interview page, not sub-pages
+    "/interview",
+  ],
 };

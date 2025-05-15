@@ -4,6 +4,8 @@ const nextConfig: NextConfig = {
   env: {
     RESOURCE_WALLET_ADDRESS: process.env.RESOURCE_WALLET_ADDRESS,
     NEXT_PUBLIC_FACILITATOR_URL: process.env.NEXT_PUBLIC_FACILITATOR_URL,
+    PRICE: process.env.PRICE,
+    NETWORK: process.env.NETWORK,
   },
   webpack(config) {
     config.module.rules.push({
@@ -15,6 +17,12 @@ const nextConfig: NextConfig = {
   experimental: {
     nodeMiddleware: true,
   },
+  turbopack: {
+    resolveAlias: {
+      '@': './',
+    },
+  },
+  skipMiddlewareUrlNormalize: true,
 };
 
 export default nextConfig;
