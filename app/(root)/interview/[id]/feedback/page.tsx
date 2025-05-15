@@ -10,6 +10,8 @@ import { getCurrentUser } from "@/lib/actions/auth.action";
 import { cn } from "@/lib/utils";
 import LoadingButton from "@/components/ui/loading-button";
 import LoadingLink from "@/components/ui/loading-link";
+import { Address } from "@coinbase/onchainkit/identity";
+import AddToWallet from "@/components/AddToWallet";
 
 // Helper function to get score color class based on score value
 const getScoreColorClass = (score: number) => {
@@ -172,6 +174,18 @@ const Feedback = async ({ params }: RouteParams) => {
       </div>
       
       {/* Action Buttons */}
+      <AddToWallet 
+        feedback={{
+          id: feedback?.id || '',
+          role: interview.role,
+          score: totalScore,
+          strengths: feedback?.strengths || [],
+          areasForImprovement: feedback?.areasForImprovement || [],
+          date: formattedDate,
+          userId: user?.id || ''
+        }} 
+        userAddress={"0x1dBFDd86CcE60423fd253c5A99aef842dBbA0a4A"}
+      />
       <div className="flex flex-col sm:flex-row gap-4 pt-4">
         <LoadingButton 
           href="/"
