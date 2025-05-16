@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { FeedbackData } from '@/types/feedback';
+import FeedbackPreviewModal from './FeedbackPreviewModal';
 
 interface AddToWalletProps {
   feedback: FeedbackData;
@@ -12,6 +13,7 @@ export default function AddToWallet({ feedback }: AddToWalletProps) {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [showPreviewModal, setShowPreviewModal] = useState(false);
 
   const generateFeedbackImage = async () => {
     // Create canvas with higher resolution for better quality
@@ -130,7 +132,7 @@ export default function AddToWallet({ feedback }: AddToWalletProps) {
     });
   };
 
-  async function downloadFeedbackImage() {
+  async function generatePreview() {
     try {
       setIsLoading(true);
       setError(null);
@@ -138,19 +140,13 @@ export default function AddToWallet({ feedback }: AddToWalletProps) {
       // Generate the feedback image
       const imageFile = await generateFeedbackImage();
       
-      // Create a download link for the image
+      // Create a URL for the image
       const imageObjectUrl = URL.createObjectURL(imageFile);
       setImageUrl(imageObjectUrl);
       setSuccess(true);
       
-      // Create a temporary link element and trigger download
-      const downloadLink = document.createElement('a');
-      downloadLink.href = imageObjectUrl;
-      downloadLink.download = 'proofprep-feedback.png';
-      document.body.appendChild(downloadLink);
-      downloadLink.click();
-      document.body.removeChild(downloadLink);
-      
+      // Show the preview modal
+      setShowPreviewModal(true);
     } catch (err) {
       console.error('Error generating feedback image:', err);
       setError(err instanceof Error ? err.message : 'Failed to generate feedback image');
@@ -158,11 +154,23 @@ export default function AddToWallet({ feedback }: AddToWalletProps) {
       setIsLoading(false);
     }
   }
+  
+  function downloadImage() {
+    if (!imageUrl) return;
+    
+    // Create a temporary link element and trigger download
+    const downloadLink = document.createElement('a');
+    downloadLink.href = imageUrl;
+    downloadLink.download = 'proofprep-feedback.png';
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  }
 
   return (
     <div className="w-full space-y-4">
       <button
-        onClick={downloadFeedbackImage}
+        onClick={generatePreview}
         disabled={isLoading}
         className="w-full p-3 flex items-center justify-center gap-2 bg-primary-200 hover:bg-primary-100 text-dark-100 rounded-xl font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
@@ -172,7 +180,7 @@ export default function AddToWallet({ feedback }: AddToWalletProps) {
             Generating Image...
           </>
         ) : (
-          'Download Feedback Image'
+          'Preview Feedback Image'
         )}
       </button>
 
@@ -182,20 +190,28 @@ export default function AddToWallet({ feedback }: AddToWalletProps) {
         </div>
       )}
 
-      {success && !error && !isLoading && (
+      {/* Preview Modal */}
+      {showPreviewModal && imageUrl && (
+        <FeedbackPreviewModal
+          imageUrl={imageUrl}
+          onClose={() => setShowPreviewModal(false)}
+          onDownload={() => {
+            downloadImage();
+            // Keep the modal open so they can also share if desired
+          }}
+        />
+      )}
+      
+      {success && !error && !isLoading && !showPreviewModal && (
         <div className="p-3 rounded-lg bg-green-500/10 border border-green-500/20">
           <p className="text-green-500 text-sm text-center">
             Successfully generated feedback image!
-            {imageUrl && (
-              <a
-                href={imageUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block underline hover:text-green-400 mt-1"
-              >
-                View Feedback Image
-              </a>
-            )}
+            <button
+              onClick={() => setShowPreviewModal(true)}
+              className="block underline hover:text-green-400 mt-1 mx-auto"
+            >
+              View Feedback Image
+            </button>
           </p>
         </div>
       )}
