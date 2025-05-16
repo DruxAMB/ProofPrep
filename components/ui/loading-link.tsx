@@ -2,10 +2,11 @@
 
 import { useState, ReactNode } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-interface LoadingLinkProps {
+export interface LoadingLinkProps {
   href: string;
   children: ReactNode;
   className?: string;
@@ -14,14 +15,14 @@ interface LoadingLinkProps {
   loadingText?: string;
 }
 
-const LoadingLink = ({
+export function LoadingLink({
   href,
   children,
   className,
   variant = "default",
   size = "default",
-  loadingText,
-}: LoadingLinkProps) => {
+  loadingText = "Loading...",
+}: LoadingLinkProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -33,22 +34,23 @@ const LoadingLink = ({
 
   return (
     <Button
+      asChild={!isLoading}
       className={cn(className)}
       variant={variant}
       size={size}
-      onClick={handleClick}
+      onClick={isLoading ? undefined : handleClick}
       disabled={isLoading}
     >
       {isLoading ? (
-        <>
+        <div className="flex items-center">
           <span className="animate-spin mr-2 inline-block size-4 border-2 border-current border-t-transparent rounded-full" aria-hidden="true"></span>
-          {loadingText || "Loading..."}
-        </>
+          <span>{loadingText}</span>
+        </div>
       ) : (
-        children
+        <Link href={href}>{children}</Link>
       )}
     </Button>
   );
-};
+}
 
 export default LoadingLink;

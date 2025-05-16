@@ -43,13 +43,13 @@ export default function FeedbackPreviewModal({
 
   return (
     <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-      <div className="bg-dark-100 rounded-xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden">
+      <div className="bg-dark-100 rounded-xl max-w-4xl w-fit max-h-[90vh] flex flex-col overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-dark-300">
           <h3 className="text-lg font-semibold text-white">Feedback Preview</h3>
           <button 
             onClick={onClose}
-            className="text-gray-400 hover:text-white transition-colors"
+            className="text-gray-400 hover:text-white transition-colors cursor-pointer"
           >
             <X size={20} />
           </button>
@@ -68,7 +68,7 @@ export default function FeedbackPreviewModal({
         <div className="p-4 border-t border-dark-300 flex flex-wrap gap-3 justify-end">
           <button
             onClick={handleShare}
-            className="px-4 py-2 flex items-center gap-2 bg-dark-200 hover:bg-dark-300 text-white rounded-lg transition-colors"
+            className="px-4 py-2 flex items-center gap-2 bg-dark-200 hover:bg-dark-300 text-white rounded-lg transition-colors cursor-pointer"
           >
             <Share2 size={18} />
             {copySuccess ? 'URL Copied!' : 'Share'}
@@ -76,7 +76,7 @@ export default function FeedbackPreviewModal({
           
           <button
             onClick={onDownload}
-            className="px-4 py-2 flex items-center gap-2 bg-primary-200 hover:bg-primary-100 text-dark-100 rounded-lg transition-colors"
+            className="px-4 py-2 flex items-center gap-2 bg-primary-200 hover:bg-primary-100 text-dark-100 rounded-lg transition-colors cursor-pointer"
           >
             <Download size={18} />
             Download
