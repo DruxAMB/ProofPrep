@@ -28,7 +28,17 @@ ProofPrep is an AI-powered interview preparation platform designed to help job s
 - **Tailwind CSS**: Modern, responsive UI with custom design system.
 - **x402 Payment Integration**: Blockchain-based payment processing for interview access.
 - **OnchainKit**: Web3 wallet integration for connecting to Base network.
+- **Vercel**: A cloud platform used for deploying and hosting web applications, especially those built with modern JavaScript frameworks like Next.js, React, Vue, and others. 
 
+## Demo
+
+You can try ProofPrep live here:
+- [https://proofprep.druxamb.dev](https://proofprep.druxamb.dev)
+- [https://proofprep.vercel.app/](https://proofprep.vercel.app/)
+
+
+Watch a video demo:
+- [YouTube Demo](https://youtu.be/C8KdmWDGYNw?si=amdmSjzCIBi-mbov)
 ## Problem Statement
 
 Traditional interview preparation methods often fall short in several ways:
