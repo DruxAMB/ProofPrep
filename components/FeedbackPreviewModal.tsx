@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { X, Download, Share2 } from 'lucide-react';
+import Image from 'next/image';
 
 interface FeedbackPreviewModalProps {
   imageUrl: string;
@@ -57,9 +58,11 @@ export default function FeedbackPreviewModal({
         
         {/* Image preview */}
         <div className="flex-1 overflow-auto p-4 flex items-center justify-center">
-          <img 
+          <Image 
             src={imageUrl} 
-            alt="Feedback Preview" 
+            alt="Feedback Preview"
+            height={1000}
+            width={1000} 
             className="max-w-full max-h-[70vh] object-contain rounded-lg shadow-lg"
           />
         </div>

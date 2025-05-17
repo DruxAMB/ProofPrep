@@ -10,8 +10,6 @@ import { getCurrentUser } from "@/lib/actions/auth.action";
 import { cn } from "@/lib/utils";
 import LoadingButton from "@/components/ui/loading-button";
 import LoadingLink from "@/components/ui/loading-link";
-import { Address } from "@coinbase/onchainkit/identity";
-import AddToWallet from "@/components/AddToWallet";
 import { FeedbackWallet } from "@/components/FeedbackWallet";
 
 // Helper function to get score color class based on score value
