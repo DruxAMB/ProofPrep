@@ -175,11 +175,11 @@ export default function AddToWallet({ feedback }: AddToWalletProps) {
   }
 
   return (
-    <div className="w-full space-y-4">
+    <div className="w-full">
       <button
         onClick={generatePreview}
         disabled={isLoading}
-        className="w-full p-3 flex items-center justify-center gap-2 bg-primary-200 hover:bg-primary-100 text-dark-100 rounded-xl font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full p-2 flex items-center justify-center gap-2 bg-primary-200 hover:bg-primary-100 text-dark-100 rounded-xl font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
       >
         {isLoading ? (
           <>
@@ -187,7 +187,7 @@ export default function AddToWallet({ feedback }: AddToWalletProps) {
             Generating Image...
           </>
         ) : (
-          'Preview Feedback Image'
+          'Preview and Share Feedback'
         )}
       </button>
 
@@ -210,7 +210,7 @@ export default function AddToWallet({ feedback }: AddToWalletProps) {
         />
       )}
       
-      {success && !error && !isLoading && !showPreviewModal && (
+      {/* {success && !error && !isLoading && !showPreviewModal && (
         <div className="p-3 rounded-lg bg-green-500/10 border border-green-500/20">
           <p className="text-green-500 text-sm text-center">
             Successfully generated feedback image!
@@ -222,7 +222,7 @@ export default function AddToWallet({ feedback }: AddToWalletProps) {
             </button>
           </p>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

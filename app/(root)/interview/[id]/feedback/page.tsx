@@ -186,7 +186,7 @@ const Feedback = async ({ params }: RouteParams) => {
           }} 
         />
       )}
-      <div className="flex flex-col sm:flex-row gap-4 pt-4">
+      <div className="flex flex-col sm:flex-row gap-4">
         <LoadingButton 
           href="/"
           iconType="arrowLeft"
