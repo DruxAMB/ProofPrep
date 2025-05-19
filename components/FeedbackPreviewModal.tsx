@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { X, Download, Share2, Twitter, ExternalLink } from "lucide-react";
+import { X, Download, Share2, Twitter } from "lucide-react";
 import Image from "next/image";
 
 interface FeedbackPreviewModalProps {
@@ -20,7 +20,7 @@ export default function FeedbackPreviewModal({
   const [copySuccess, setCopySuccess] = useState(false);
 
   // Generate share message with the feedback score
-  const shareMessage = `I just took a mock interview with @proofprepai and got a feedback score of ${feedbackScore}! Try it out at proofprep.druxamb.dev`;
+  const shareMessage = `I just took a mock interview with @proofprepai and got a feedback score of ${feedbackScore}%! Try it out at proofprep.druxamb.dev`;
 
   // Create a blob URL for image download if needed
   const [blobUrl, setBlobUrl] = useState<string | null>(null);
@@ -136,7 +136,7 @@ export default function FeedbackPreviewModal({
             alt="Feedback Preview"
             height={1000}
             width={1000}
-            className="max-w-sm md:max-w-sm object-contain rounded-lg shadow-lg"
+            className="max-w-sm md:max-w-lg object-contain rounded-lg shadow-lg"
           />
         </div>
 
@@ -152,7 +152,7 @@ export default function FeedbackPreviewModal({
                   </p>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-3 text-xs md:text-md">
                   <button
                     onClick={handleCopyMessage}
                     className="px-4 py-2 flex items-center justify-center gap-2 bg-dark-300 hover:bg-dark-400 text-white rounded-lg transition-colors cursor-pointer"
