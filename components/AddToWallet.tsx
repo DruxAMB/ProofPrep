@@ -201,6 +201,7 @@ export default function AddToWallet({ feedback }: AddToWalletProps) {
       {showPreviewModal && imageUrl && (
         <FeedbackPreviewModal
           imageUrl={imageUrl}
+          feedbackScore={feedback.score}
           onClose={() => setShowPreviewModal(false)}
           onDownload={() => {
             downloadImage();
