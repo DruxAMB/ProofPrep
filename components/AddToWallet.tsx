@@ -174,6 +174,8 @@ export default function AddToWallet({ feedback }: AddToWalletProps) {
     document.body.removeChild(downloadLink);
   }
 
+  console.log(success);
+
   return (
     <div className="w-full">
       <button

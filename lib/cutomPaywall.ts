@@ -7,7 +7,7 @@ import type { PaymentRequirements } from "x402/types"
  * Note: We use environment variables for price and network configuration.
  */
 export const customPaywallHtml: string = (() => {
-  const price = process.env.PRICE || "$1" // Usar la variable de entorno PRICE con fallback
+  const price = process.env.PRICE || "$0.8" // Usar la variable de entorno PRICE con fallback
   const network = (process.env.NETWORK || "base") as PaymentRequirements["network"]
   const payTo = process.env.RESOURCE_WALLET_ADDRESS || "0xaf59B12ea11914A0373ffbb13FF8b03F8537C599"
   const testnet = network === "base-sepolia"
@@ -25,7 +25,7 @@ export const customPaywallHtml: string = (() => {
       network,
       maxAmountRequired,
       resource: "", // Will be updated in the browser with window.location.href
-      description: "Unlock premium content with a small payment",
+      description: "Start your interview",
       mimeType: "application/json",
       payTo,
       maxTimeoutSeconds: 300,
@@ -166,7 +166,7 @@ export const customPaywallHtml: string = (() => {
   // Replace the original content text with new wording that includes the dynamic price
   html = html.replace(
     /Access to protected content\. To access this content, please pay [^<]*/g,
-    `Unlock Premium Content! Just a tiny payment of ${price} Base Sepolia USDC gives you instant access.`,
+    `Start your interview! Just a tiny payment of ${price} Base Sepolia USDC gives you instant access.`,
   )
 
   // Add the network notice after the "Need Base Sepolia USDC? Get some here." text

@@ -15,11 +15,6 @@ import { toast } from "sonner";
 import {
   ConnectWallet,
   Wallet,
-  WalletDropdown,
-  WalletAdvancedAddressDetails,
-  WalletAdvancedTokenHoldings,
-  WalletAdvancedTransactionActions,
-  WalletAdvancedWalletActions,
 } from "@coinbase/onchainkit/wallet";
 
 import {
@@ -255,12 +250,6 @@ export function SettingsModal() {
                       <div className="min-w-[180px] flex justify-end">
                         <Wallet>
                           <ConnectWallet />
-                          <WalletDropdown>
-                            <WalletAdvancedWalletActions />
-                            <WalletAdvancedAddressDetails />
-                            <WalletAdvancedTransactionActions />
-                            <WalletAdvancedTokenHoldings />
-                          </WalletDropdown>
                         </Wallet>
                       </div>
                     </div>

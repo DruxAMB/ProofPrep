@@ -7,7 +7,7 @@ import type { NextRequest } from "next/server";
 
 const payTo = process.env.RESOURCE_WALLET_ADDRESS as Address;
 const network = process.env.NETWORK as Network;
-const price = process.env.PRICE || "$1";
+const price = process.env.PRICE || "$0.8";
 
 const x402Handler = paymentMiddleware(
   payTo,

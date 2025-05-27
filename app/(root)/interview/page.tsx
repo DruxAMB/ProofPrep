@@ -9,8 +9,8 @@ const Page = async () => {
 
   return (
     <>
-      <div>
-        <h3 className="text-xl font-medium">Action Required</h3>
+      <div className="dark:hidden bg-black rounded-md px-4 py-1">
+        <h3 className="text-xl font-medium text-white">Action Required</h3>
         <p className="text-white">
           To ensure all buttons work properly, please reload the page. You only
           need to do this once.{" "}
