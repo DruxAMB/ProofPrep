@@ -1,118 +1,229 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { ArrowRight, CheckCircle } from "lucide-react";
 
 const LandingPage = () => {
   const router = useRouter();
+  const [activeFeature, setActiveFeature] = useState(0);
+  const featuresRef = useRef<HTMLDivElement>(null);
+  
+  // Auto-rotate featured items
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveFeature((prev) => (prev + 1) % 3);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
   
   return (
-    <>
-      {/* Hero Section */}
-      <section className="card-border py-16 px-8 flex flex-col md:flex-row items-center justify-between gap-8">
-        <div className="flex flex-col gap-6 max-w-xl">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-100 to-primary-300">
+    <div className="flex flex-col min-h-screen max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Hero Section - Clerk-inspired clean design */}
+      <section className="flex flex-col items-center text-center pt-16 pb-20">
+        <div className="space-y-6 max-w-4xl">
+          <div className="inline-block rounded-full bg-primary-100/10 px-3 py-1 text-sm text-primary-100 backdrop-blur-sm mb-2">
+            Introducing ProofPrep
+          </div>
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary-100 to-primary-300 pb-1">
             Ace Your Interviews with AI Practice
           </h1>
-          <p className="text-lg md:text-xl">
+          <p className="text-xl text-light-300 max-w-2xl mx-auto leading-relaxed">
             Practice real interview questions with our AI interviewer. Get instant feedback and improve your skills before your next big opportunity.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 mt-2">
+          <div className="flex flex-col sm:flex-row justify-center gap-4 pt-4">
             <Button 
               onClick={() => router.push("/sign-in")} 
-              className="btn-primary px-8 py-6 text-lg"
+              className="btn-primary group relative overflow-hidden px-8 py-6 text-lg transition-all duration-300 ease-in-out"
             >
-              Get Started
+              <span className="relative z-10 flex items-center gap-1.5 transition-transform duration-300 group-hover:translate-x-1">
+                Get Started <ArrowRight className="h-4 w-4" />
+              </span>
             </Button>
             <Button 
-              onClick={() => {
-                const featuresSection = document.getElementById("features");
-                if (featuresSection) {
-                  featuresSection.scrollIntoView({ behavior: "smooth" });
-                }
-              }} 
+              onClick={() => scrollToSection("how-it-works")} 
               variant="outline" 
-              className="px-8 py-6 text-lg"
+              className="px-8 py-6 text-lg hover:bg-dark-300/30 transition-all duration-300"
             >
               Learn More
             </Button>
           </div>
         </div>
-        <div className="hidden md:block">
-          <Image
-            src="/robot.gif"
-            alt="ProofPrep AI Interviewer"
-            width={450}
-            height={450}
-            className="rounded-lg"
-            priority
-            unoptimized
-          />
+        
+        {/* Animated feature highlights */}
+        <div className="relative mt-20 w-full max-w-5xl">
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-dark-100 to-dark-100 z-10 pointer-events-none" />
+          <div className="relative z-0 w-full overflow-hidden rounded-xl border border-dark-300 bg-dark-200/40 backdrop-blur-md">
+            <div className="flex justify-center p-8">
+              <Image
+                src="/robot.gif"
+                alt="ProofPrep AI Interviewer"
+                width={480}
+                height={480}
+                priority
+                unoptimized
+                className="rounded-lg object-cover shadow-2xl transition-all duration-700 ease-in-out"
+              />
+            </div>
+            <div className="absolute bottom-0 left-0 right-0 flex justify-center p-4 gap-2">
+              {[0, 1, 2].map((i) => (
+                <button
+                  key={i}
+                  className={`h-2 rounded-full transition-all duration-300 ${i === activeFeature ? 'w-8 bg-primary-300' : 'w-2 bg-dark-300'}`}
+                  onClick={() => setActiveFeature(i)}
+                  aria-label={`View feature ${i + 1}`}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       </section>
       
-      {/* Features Section */}
-      <section id="features" className="mt-20 px-4">
-        <h2 className="text-3xl font-semibold text-center">How It Works</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-          <FeatureCard
-            title="Practice Interviews"
-            description="Get tailored interviews for any role with realistic questions based on real job descriptions."
-            icon="/calendar.svg"
-            iconAlt="Interview icon"
-          />
-          <FeatureCard
-            title="AI Feedback"
-            description="Receive instant, detailed feedback on your answers with actionable suggestions for improvement."
-            icon="/star.svg"
-            iconAlt="Feedback icon"
-            highlighted
-          />
-          <FeatureCard
-            title="Track Progress"
-            description="Monitor your improvement over time with detailed performance analytics."
-            icon="/logo.svg"
-            iconAlt="Progress tracking"
-          />
+      {/* How It Works - Clean, spaced sections */}
+      <section id="how-it-works" className="py-24" ref={featuresRef}>
+        <div className="text-center mb-16">
+          <h2 className="text-3xl font-bold mb-4">How It Works</h2>
+          <p className="text-light-300 max-w-2xl mx-auto">Our AI-powered platform makes interview practice effective and actionable</p>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {features.map((feature, index) => (
+            <FeatureCard
+              key={index}
+              {...feature}
+              highlighted={index === 1}
+            />
+          ))}
         </div>
       </section>
       
-      {/* Testimonials Section */}
-      <section className="mt-20 px-4">
-        <h2 className="text-3xl font-semibold text-center">What Users Say</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
-          <TestimonialCard
-            quote="ProofPrep helped me land my dream job! The AI interviewer gave me the confidence I needed."
-            author="Alex Morgan"
-            role="Software Engineer"
-          />
-          <TestimonialCard
-            quote="The feedback is incredibly detailed and helped me improve my technical responses tremendously."
-            author="Jamie Chen"
-            role="Product Designer"
-          />
+      {/* Benefits Section - Clerk-style feature list */}
+      <section className="py-24 border-t border-dark-300">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div>
+            <h2 className="text-3xl font-bold mb-6">Everything You Need to Succeed</h2>
+            <p className="text-light-300 mb-8">ProofPrep gives you the tools and feedback to excel in any interview scenario.</p>
+            
+            <div className="space-y-6">
+              {benefits.map((benefit, index) => (
+                <div key={index} className="flex items-start gap-3">
+                  <CheckCircle className="h-6 w-6 text-primary-300 flex-shrink-0 mt-1" />
+                  <div>
+                    <h3 className="font-medium">{benefit.title}</h3>
+                    <p className="text-light-300">{benefit.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          <div className="relative">
+            <div className="absolute -inset-0.5 rounded-xl bg-gradient-to-r from-primary-300/20 to-primary-100/20 blur-lg opacity-70" />
+            <div className="relative rounded-xl border border-dark-300 bg-dark-200/80 backdrop-blur-sm p-6 overflow-hidden">
+              <div className="space-y-5">
+                {testimonials.map((testimonial, index) => (
+                  <TestimonialCard key={index} {...testimonial} />
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </section>
       
-      {/* CTA Section */}
-      <section className="mt-20 card-border p-12 text-center">
-        <h2 className="text-3xl font-semibold">Ready to Ace Your Next Interview?</h2>
-        <p className="mt-4 text-xl max-w-2xl mx-auto">
-          Join thousands of professionals who are using ProofPrep to prepare for their interviews and advance their careers.
-        </p>
-        <Button 
-          onClick={() => router.push("/sign-in")} 
-          className="btn-primary px-8 py-6 text-lg mt-8"
-        >
-          Sign in with Google
-        </Button>
+      {/* CTA Section - Clean, focused call to action */}
+      <section className="py-24 text-center border-t border-dark-300">
+        <div className="max-w-3xl mx-auto space-y-8">
+          <h2 className="text-3xl font-bold">Ready to Ace Your Next Interview?</h2>
+          <p className="text-xl text-light-300">
+            Join thousands of professionals who are using ProofPrep to prepare for their interviews and advance their careers.
+          </p>
+          <Button 
+            onClick={() => router.push("/sign-in")} 
+            className="btn-primary group relative overflow-hidden px-10 py-6 text-lg transition-all duration-300 ease-in-out"
+          >
+            <span className="relative z-10 flex items-center gap-2 transition-transform duration-300 group-hover:translate-x-1">
+              Sign in with Google <ArrowRight className="h-5 w-5" />
+            </span>
+          </Button>
+          
+          <p className="text-sm text-light-400 pt-4">
+            No credit card required. Get started in seconds.
+          </p>
+        </div>
       </section>
-    </>
+      
+      {/* Simple footer */}
+      <footer className="py-12 border-t border-dark-300 text-center text-sm text-light-400">
+        <p>© {new Date().getFullYear()} ProofPrep. All rights reserved.</p>
+      </footer>
+    </div>
   );
 };
 
-// Feature Card Component
+// Data arrays
+const features = [
+  {
+    title: "Practice Interviews",
+    description: "Get tailored interviews for any role with realistic questions based on real job descriptions.",
+    icon: "/calendar.svg",
+    iconAlt: "Interview icon"
+  },
+  {
+    title: "AI Feedback",
+    description: "Receive instant, detailed feedback on your answers with actionable suggestions for improvement.",
+    icon: "/star.svg",
+    iconAlt: "Feedback icon"
+  },
+  {
+    title: "Track Progress",
+    description: "Monitor your improvement over time with detailed performance analytics.",
+    icon: "/logo.svg",
+    iconAlt: "Progress tracking"
+  }
+];
+
+const benefits = [
+  {
+    title: "Realistic Interview Scenarios",
+    description: "Practice with AI that simulates real interviewer behaviors and questions."
+  },
+  {
+    title: "Detailed Performance Analysis",
+    description: "Get scored on clarity, relevance, technical accuracy, and more."
+  },
+  {
+    title: "Personalized Improvement Plan",
+    description: "Receive tailored recommendations based on your strengths and weaknesses."
+  },
+  {
+    title: "On-Demand Practice",
+    description: "Practice anytime, anywhere without scheduling or time constraints."
+  }
+];
+
+const testimonials = [
+  {
+    quote: "ProofPrep helped me land my dream job! The AI interviewer gave me the confidence I needed.",
+    author: "Alex Morgan",
+    role: "Software Engineer"
+  },
+  {
+    quote: "The feedback is incredibly detailed and helped me improve my technical responses tremendously.",
+    author: "Jamie Chen",
+    role: "Product Designer"
+  }
+];
+
+// Feature Card Component - Clerk-inspired clean design
 const FeatureCard = ({ 
   title, 
   description, 
@@ -127,17 +238,23 @@ const FeatureCard = ({
   highlighted?: boolean;
 }) => {
   return (
-    <div className={`card-border p-6 flex flex-col items-center text-center ${highlighted ? 'border-primary-300' : ''}`}>
-      <div className="rounded-full bg-dark-300 p-4 mb-4">
-        <Image src={icon} alt={iconAlt} width={32} height={32} />
+    <div 
+      className={`group relative rounded-xl p-6 transition-all duration-300 ${
+        highlighted 
+          ? 'bg-gradient-to-b from-primary-300/10 to-transparent border border-primary-300/30' 
+          : 'hover:bg-dark-300/30 border border-dark-300'
+      }`}
+    >
+      <div className={`rounded-full p-3 mb-4 inline-flex ${highlighted ? 'bg-primary-300/20' : 'bg-dark-300/70'}`}>
+        <Image src={icon} alt={iconAlt} width={24} height={24} className="transition-transform duration-300 group-hover:scale-110" />
       </div>
-      <h3 className="text-xl font-medium mb-2">{title}</h3>
-      <p>{description}</p>
+      <h3 className="text-lg font-medium mb-2">{title}</h3>
+      <p className="text-light-300 text-sm leading-relaxed">{description}</p>
     </div>
   );
 };
 
-// Testimonial Card Component
+// Testimonial Card Component - Clean, modern style
 const TestimonialCard = ({ 
   quote, 
   author, 
@@ -148,12 +265,17 @@ const TestimonialCard = ({
   role: string;
 }) => {
   return (
-    <div className="card-border p-6">
-      <p className="italic">&ldquo;{quote}&rdquo;</p>
-      <div className="mt-4 flex items-center">
+    <div className="p-4 rounded-lg bg-dark-300/30 backdrop-blur-sm border border-dark-300/50 transition-all duration-300 hover:border-primary-300/30">
+      <p className="text-sm italic text-light-200 leading-relaxed">"{quote}"</p>
+      <div className="mt-3 flex items-center justify-between">
         <div>
-          <p className="font-medium">{author}</p>
-          <p className="text-sm text-light-400">{role}</p>
+          <p className="font-medium text-sm">{author}</p>
+          <p className="text-xs text-light-400">{role}</p>
+        </div>
+        <div className="flex -space-x-1">
+          {[...Array(5)].map((_, i) => (
+            <div key={i} className="h-1 w-1 rounded-full bg-primary-300" />
+          ))}
         </div>
       </div>
     </div>
