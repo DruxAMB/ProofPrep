@@ -137,7 +137,7 @@ const CreditsDisplay = ({ userId }: CreditsDisplayProps) => {
               <div className={`text-sm ${percentCreditsRemaining < 30 ? 'text-red-400' : 'text-light-300'}`}>
                 {percentCreditsRemaining < 30 
                   ? "Running low on credits! Consider purchasing more."
-                  : `You have enough credits for ${userCredits.remainingCredits} more interviews.`
+                  : `You have enough credits for ${userCredits?.remainingCredits || 0} more interviews.`
                 }
               </div>
               
