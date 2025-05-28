@@ -4,11 +4,14 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { ArrowRight, CheckCircle } from "lucide-react";
+import { ArrowRight, CheckCircle, Play, X } from "lucide-react";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { VisuallyHidden } from "@/components/ui/visually-hidden";
 
 const LandingPage = () => {
   const router = useRouter();
   const [activeFeature, setActiveFeature] = useState(0);
+  const [videoOpen, setVideoOpen] = useState(false);
   const featuresRef = useRef<HTMLDivElement>(null);
   
   // Auto-rotate featured items
@@ -42,7 +45,7 @@ const LandingPage = () => {
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4 pt-4">
             <Button 
-              onClick={() => router.push("/sign-in")} 
+              onClick={() => router.push("/sign-up")} 
               className="btn-primary group relative overflow-hidden px-8 py-6 text-lg transition-all duration-300 ease-in-out"
             >
               <span className="relative z-10 flex items-center gap-1.5 transition-transform duration-300 group-hover:translate-x-1">
@@ -59,20 +62,34 @@ const LandingPage = () => {
           </div>
         </div>
         
-        {/* Animated feature highlights */}
+        {/* Animated feature highlights with demo video */}
         <div className="relative mt-20 w-full max-w-5xl">
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-dark-100 to-dark-100 z-10 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-dark-100/70 to-dark-100/70 z-10 pointer-events-none" />
           <div className="relative z-0 w-full overflow-hidden rounded-xl border border-dark-300 bg-dark-200/40 backdrop-blur-md">
-            <div className="flex justify-center p-8">
+            <div className="flex justify-center p-8 relative group">
               <Image
-                src="/robot.gif"
+                src="/hello.gif"
                 alt="ProofPrep AI Interviewer"
                 width={480}
                 height={480}
                 priority
                 unoptimized
-                className="rounded-lg object-cover shadow-2xl transition-all duration-700 ease-in-out"
+                className="rounded-lg object-cover shadow-2xl transition-all duration-700 ease-in-out group-hover:brightness-[0.8]"
               />
+              
+              {/* Video play button overlay */}
+              <button 
+                className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer"
+                onClick={() => setVideoOpen(true)}
+                aria-label="Watch demo video"
+              >
+                <div className="bg-primary-300/90 rounded-full p-5 flex items-center justify-center shadow-xl transform transition-transform group-hover:scale-105">
+                  <Play className="h-12 w-12 text-dark-100 fill-dark-100" />
+                </div>
+                <span className="absolute bottom-8 text-white font-medium bg-dark-100/80 px-4 py-2 rounded-full backdrop-blur-sm">
+                  Watch Demo (2:15)
+                </span>
+              </button>
             </div>
             <div className="absolute bottom-0 left-0 right-0 flex justify-center p-4 gap-2">
               {[0, 1, 2].map((i) => (
@@ -86,6 +103,31 @@ const LandingPage = () => {
             </div>
           </div>
         </div>
+        
+        {/* Demo Video Dialog */}
+        <Dialog open={videoOpen} onOpenChange={setVideoOpen}>
+          <DialogContent className="sm:max-w-[900px] p-0 bg-transparent border-none">
+            <DialogTitle>
+              <VisuallyHidden>ProofPrep Demo Video</VisuallyHidden>
+            </DialogTitle>
+            <div className="relative w-full pt-[56.25%] bg-dark-100 rounded-lg overflow-hidden">
+              <button 
+                className="absolute top-4 right-4 z-20 p-2 bg-dark-300/80 rounded-full hover:bg-dark-300 transition-colors"
+                onClick={() => setVideoOpen(false)}
+              >
+                <X className="h-5 w-5" />
+              </button>
+              <iframe 
+                className="absolute top-0 left-0 w-full h-full"
+                src="https://www.youtube.com/embed/C8KdmWDGYNw?si=RbF8jhtfhlpGY6Qx" 
+                title="ProofPrep Demo"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+          </DialogContent>
+        </Dialog>
       </section>
       
       {/* How It Works - Clean, spaced sections */}
