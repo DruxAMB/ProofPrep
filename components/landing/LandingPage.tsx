@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
@@ -10,18 +10,9 @@ import { VisuallyHidden } from "@/components/ui/visually-hidden";
 
 const LandingPage = () => {
   const router = useRouter();
-  const [activeFeature, setActiveFeature] = useState(0);
   const [videoOpen, setVideoOpen] = useState(false);
   const [videoLoading, setVideoLoading] = useState(true);
   const featuresRef = useRef<HTMLDivElement>(null);
-  
-  // Auto-rotate featured items
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveFeature((prev) => (prev + 1) % 3);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -80,7 +71,7 @@ const LandingPage = () => {
               
               {/* Video play button overlay */}
               <button 
-                className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer"
+                className="absolute inset-0 flex items-center justify-center opacity-100 transition-opacity duration-300 cursor-pointer"
                 onClick={() => setVideoOpen(true)}
                 aria-label="Watch demo video"
               >
@@ -91,16 +82,6 @@ const LandingPage = () => {
                   Watch Demo (2:34)
                 </span>
               </button>
-            </div>
-            <div className="absolute bottom-0 left-0 right-0 flex justify-center p-4 gap-2">
-              {[0, 1, 2].map((i) => (
-                <button
-                  key={i}
-                  className={`h-2 rounded-full transition-all duration-300 ${i === activeFeature ? 'w-8 bg-primary-300' : 'w-2 bg-dark-300'}`}
-                  onClick={() => setActiveFeature(i)}
-                  aria-label={`View feature ${i + 1}`}
-                />
-              ))}
             </div>
           </div>
         </div>
