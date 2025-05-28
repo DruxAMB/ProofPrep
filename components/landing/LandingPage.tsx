@@ -136,7 +136,7 @@ const LandingPage = () => {
               
               <iframe 
                 className="absolute top-0 left-0 w-full h-full"
-                src="https://www.youtube.com/embed/C8KdmWDGYNw?si=RbF8jhtfhlpGY6Qx" 
+                src="https://www.youtube.com/embed/C8KdmWDGYNw?autoplay=1&si=RbF8jhtfhlpGY6Qx" 
                 title="ProofPrep Demo"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -326,7 +326,7 @@ const TestimonialCard = ({
 }) => {
   return (
     <div className="p-4 rounded-lg bg-dark-300/30 backdrop-blur-sm border border-dark-300/50 transition-all duration-300 hover:border-primary-300/30">
-      <p className="text-sm italic text-light-200 leading-relaxed">"{quote}"</p>
+      <p className="text-sm italic text-light-200 leading-relaxed">&quot;{quote}&quot;</p>
       <div className="mt-3 flex items-center justify-between">
         <div>
           <p className="font-medium text-sm">{author}</p>
