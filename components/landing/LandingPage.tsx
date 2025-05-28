@@ -12,6 +12,7 @@ const LandingPage = () => {
   const router = useRouter();
   const [activeFeature, setActiveFeature] = useState(0);
   const [videoOpen, setVideoOpen] = useState(false);
+  const [videoLoading, setVideoLoading] = useState(true);
   const featuresRef = useRef<HTMLDivElement>(null);
   
   // Auto-rotate featured items
@@ -87,7 +88,7 @@ const LandingPage = () => {
                   <Play className="h-12 w-12 text-dark-100 fill-dark-100" />
                 </div>
                 <span className="absolute bottom-8 text-white font-medium bg-dark-100/80 px-4 py-2 rounded-full backdrop-blur-sm">
-                  Watch Demo (2:15)
+                  Watch Demo (2:34)
                 </span>
               </button>
             </div>
@@ -105,7 +106,15 @@ const LandingPage = () => {
         </div>
         
         {/* Demo Video Dialog */}
-        <Dialog open={videoOpen} onOpenChange={setVideoOpen}>
+        <Dialog 
+          open={videoOpen} 
+          onOpenChange={(open) => {
+            setVideoOpen(open);
+            if (open) {
+              setVideoLoading(true);
+            }
+          }}
+        >
           <DialogContent className="sm:max-w-[900px] p-0 bg-transparent border-none">
             <DialogTitle>
               <VisuallyHidden>ProofPrep Demo Video</VisuallyHidden>
@@ -117,6 +126,14 @@ const LandingPage = () => {
               >
                 <X className="h-5 w-5" />
               </button>
+              
+              {/* Loading spinner */}
+              {videoLoading && (
+                <div className="absolute inset-0 flex items-center justify-center bg-dark-100">
+                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-300"></div>
+                </div>
+              )}
+              
               <iframe 
                 className="absolute top-0 left-0 w-full h-full"
                 src="https://www.youtube.com/embed/C8KdmWDGYNw?si=RbF8jhtfhlpGY6Qx" 
@@ -124,6 +141,7 @@ const LandingPage = () => {
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
+                onLoad={() => setVideoLoading(false)}
               ></iframe>
             </div>
           </DialogContent>
