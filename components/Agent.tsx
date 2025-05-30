@@ -33,6 +33,7 @@ const Agent = ({
   profileImage,
 }: AgentProps) => {
   const router = useRouter();
+  const { toast } = useToast(); // Get toast function from hook
   const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE);
   const [messages, setMessages] = useState<SavedMessage[]>([]);
   const [isSpeaking, setIsSpeaking] = useState(false);

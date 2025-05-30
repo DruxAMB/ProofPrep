@@ -1,6 +1,7 @@
 import Image from "next/image";
 import LoadingLink from "@/components/ui/loading-link";
 import InterviewCard from "@/components/InterviewCard";
+import CreditsDisplay from "@/components/credits/CreditsDisplay";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 // Adding a basic Interview type - you may already have this defined elsewhere
@@ -53,6 +54,28 @@ const Dashboard = ({ user, userInterviews, allInterviews }: DashboardProps) => {
           className="max-sm:hidden"
           unoptimized
         />
+      </section>
+
+      {/* Credits and Subscription Section */}
+      <section className="mt-12 mb-8">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-2xl font-bold bg-gradient-to-r from-white to-light-300 bg-clip-text text-transparent">Your Subscription</h2>
+          <LoadingLink
+            href="/pricing"
+            variant="outline"
+            className="text-sm border-dark-300 hover:border-primary-200 hover:bg-dark-300/30"
+            loadingText="Loading..."
+          >
+            Upgrade Plan
+          </LoadingLink>
+        </div>
+        {user && user.id ? (
+          <CreditsDisplay userId={user.id} />
+        ) : (
+          <div className="card-border w-full p-8 text-center">
+            <p className="text-lg">Sign in to view your credits</p>
+          </div>
+        )}
       </section>
 
       <section className="flex flex-col gap-6 mt-8">
