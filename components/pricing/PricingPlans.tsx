@@ -28,7 +28,9 @@ const PricingPlans = ({ userId }: PricingPlansProps) => {
   const { isAuthenticated, loading: authLoading } = useAuth();
   const { toast } = useToast();
   const [purchaseStatus, setPurchaseStatus] = useState<PurchaseStatus>("idle");
-  const [selectedPlan, setSelectedPlan] = useState<"standard" | "pro" | null>(null);
+  const [selectedPlan, setSelectedPlan] = useState<"standard" | "pro" | null>(
+    null
+  );
 
   const handlePurchase = async (plan: "standard" | "pro") => {
     try {
@@ -87,7 +89,7 @@ const PricingPlans = ({ userId }: PricingPlansProps) => {
       <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"></div>
 
       <div className="text-center max-w-3xl mx-auto mb-16 relative z-10">
-        <Badge className="mb-4 bg-primary-200/15 text-primary-300 hover:bg-primary-200/25 border-none px-3 py-1 text-sm font-medium">
+        <Badge className="mb-4 bg-primary-200/15 text-primary-200 hover:bg-primary-200/25 border-none px-3 py-1 text-sm font-medium">
           Pricing
         </Badge>
         <h2 className="text-4xl font-bold mb-6 bg-gradient-to-r from-white to-light-300 bg-clip-text text-transparent">
@@ -95,17 +97,17 @@ const PricingPlans = ({ userId }: PricingPlansProps) => {
         </h2>
         <p className="text-light-300 text-lg max-w-2xl mx-auto leading-relaxed">
           Purchase credits to practice interviews and receive AI feedback.
-          <span className="text-primary-300">No subscriptions</span>, pay only
+          <span className="text-primary-200">No subscriptions</span>, pay only
           for what you need.
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 w-full max-w-5xl relative z-10">
         {/* Standard Plan */}
-        <Card className="border border-dark-300 bg-gradient-to-b from-dark-200/80 to-dark-200/60 backdrop-blur-lg transition-all duration-300 hover:border-primary-300/40 hover:shadow-xl hover:shadow-primary-300/5 group overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-primary-300/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <Card className="border border-dark-300 bg-gradient-to-b from-dark-200/80 to-dark-200/60 backdrop-blur-lg transition-all duration-300 hover:border-primary-200/40 hover:shadow-xl hover:shadow-primary-200/5 group overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-primary-200/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           <CardHeader className="pb-2">
-            <CardTitle className="text-2xl font-bold text-white group-hover:text-primary-300/90 transition-colors duration-300">
+            <CardTitle className="text-2xl font-bold text-white group-hover:text-primary-200/90 transition-colors duration-300">
               Standard Plan
             </CardTitle>
             <CardDescription className="text-light-300/90">
@@ -150,13 +152,14 @@ const PricingPlans = ({ userId }: PricingPlansProps) => {
                 Try Again
               </Button>
             ) : (
-<Button
+              <Button
                 className="w-full bg-primary-200 hover:bg-primary-200/90 text-dark-100 font-medium mt-2 py-6 relative overflow-hidden group/btn cursor-pointer"
                 onClick={() => handlePurchase("standard")}
                 disabled={purchaseStatus === "processing"}
               >
                 <span className="relative z-10 flex items-center justify-center">
-                  {purchaseStatus === "processing" && selectedPlan === "standard" ? (
+                  {purchaseStatus === "processing" &&
+                  selectedPlan === "standard" ? (
                     <>
                       <span
                         className="animate-spin mr-2 inline-block size-4 border-2 border-current border-t-transparent rounded-full"
@@ -180,8 +183,8 @@ const PricingPlans = ({ userId }: PricingPlansProps) => {
         </Card>
 
         {/* Pro Plan */}
-        <Card className="border border-primary-300/40 bg-gradient-to-b from-dark-200/90 to-dark-200/70 backdrop-blur-lg transition-all duration-300 hover:border-primary-300/60 hover:shadow-xl hover:shadow-primary-300/10 relative overflow-hidden group">
-          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-primary-300/10 opacity-70 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <Card className="border border-primary-200/40 bg-gradient-to-b from-dark-200/90 to-dark-200/70 backdrop-blur-lg transition-all duration-300 hover:border-primary-200/60 hover:shadow-xl hover:shadow-primary-200/10 relative overflow-hidden group">
+          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-primary-200/10 opacity-70 group-hover:opacity-100 transition-opacity duration-500"></div>
           <div className="absolute top-0 right-0 z-10">
             <Badge className="bg-primary-200 text-dark-100 rounded-tl-none rounded-br-none rounded-tr-lg border-none font-medium px-3 py-1">
               Best Value
@@ -191,14 +194,14 @@ const PricingPlans = ({ userId }: PricingPlansProps) => {
           <div className="absolute -top-10 -right-10 w-40 h-40 bg-primary-200/20 rounded-full blur-3xl"></div>
 
           <CardHeader className="pb-2">
-            <CardTitle className="text-2xl font-bold text-white group-hover:text-primary-300/90 transition-colors duration-300">
+            <CardTitle className="text-2xl font-bold text-white group-hover:text-primary-200/90 transition-colors duration-300">
               Pro Plan
             </CardTitle>
             <CardDescription className="text-light-300/90">
               For serious job seekers
             </CardDescription>
             <div className="mt-6 flex items-baseline">
-              <span className="text-4xl font-bold bg-gradient-to-r from-primary-300/90 to-white bg-clip-text text-transparent">
+              <span className="text-4xl font-bold bg-gradient-to-r from-primary-200/90 to-white bg-clip-text text-transparent">
                 $49
               </span>
               <span className="text-light-400 ml-2 text-sm">one-time</span>
@@ -206,16 +209,13 @@ const PricingPlans = ({ userId }: PricingPlansProps) => {
           </CardHeader>
           <CardContent className="space-y-6 pt-4">
             <ul className="space-y-4">
-              <PricingItem highlighted emphasis>
-                1200 interview credits
-              </PricingItem>
-              <PricingItem>120 connected interview minutes</PricingItem>
+              <PricingItem>1000 interview credits</PricingItem>
+              <PricingItem>100 connected interview minutes</PricingItem>
               <PricingItem>2 free interview sessions</PricingItem>
               <PricingItem>Interview feedback</PricingItem>
               <PricingItem>Customized interview scenerios</PricingItem>
-              <PricingItem highlighted>
-                Detailed performance metrics
-              </PricingItem>
+              <PricingItem highlighted>Realtime chat with interviewer</PricingItem>
+              <PricingItem highlighted>Detailed performance metrics</PricingItem>
               <PricingItem highlighted>Interview recording</PricingItem>
               <PricingItem>Chat Support</PricingItem>
             </ul>
@@ -272,20 +272,20 @@ const PricingPlans = ({ userId }: PricingPlansProps) => {
 
       <div className="mt-16 bg-gradient-to-r from-dark-300/40 to-dark-300/30 border border-dark-300/60 rounded-xl p-8 max-w-3xl w-full backdrop-blur-sm shadow-lg relative z-10">
         <div className="flex items-start gap-4 text-light-300">
-          <AlertCircle className="h-6 w-6 text-primary-300 mt-0.5 flex-shrink-0" />
+          <AlertCircle className="h-6 w-6 text-primary-200 mt-0.5 flex-shrink-0" />
           <div>
             <h3 className="font-medium text-light-100 text-lg mb-2">
               How credits work
             </h3>
             <p className="text-base leading-relaxed">
-              One credit allows you to practice one full interview session (up
-              to 45 minutes). Choose from technical, behavioral, or mixed
+              100 credits allows you to practice different interview sessions (up
+              to 10 minutes). Choose from technical, behavioral, or mixed
               formats. Each session includes AI-powered feedback and performance
               analysis.{" "}
-              <span className="text-primary-300/90 font-medium">
-                Credits never expire
+              <span className="text-primary-200/90 font-medium">
+                Credits expire 2 months after purchase
               </span>
-              , and you can purchase more at any time.
+              , and you can purchase more at any time. Both plans include 2 free interview sessions.
             </p>
           </div>
         </div>
@@ -307,9 +307,9 @@ const PricingItem = ({
   <li className="flex items-center group/item">
     <Check
       className={`h-5 w-5 mr-3 flex-shrink-0 ${
-        highlighted ? "text-primary-300" : "text-light-300/70"
+        highlighted ? "text-primary-200" : "text-light-300/70"
       } group-hover/item:${
-        highlighted ? "text-primary-300/90" : "text-light-300"
+        highlighted ? "text-primary-200/90" : "text-light-300"
       } transition-colors duration-200`}
     />
     <span

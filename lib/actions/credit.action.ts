@@ -128,6 +128,11 @@ export async function purchaseCreditPlan(userId: string, planId: string): Promis
     const totalCredits = plan.credits;
     const totalMinutes = plan.credits * plan.minutesPerCredit;
     
+    // Calculate expiration date (2 months from now)
+    const purchaseDate = new Date();
+    const expirationDate = new Date(purchaseDate);
+    expirationDate.setMonth(expirationDate.getMonth() + 2); // 2 months expiration
+    
     // Create or update user credits
     const userCreditData: Omit<UserCredit, "id"> = {
       userId,
@@ -136,14 +141,17 @@ export async function purchaseCreditPlan(userId: string, planId: string): Promis
       planType: planId as PlanType,
       totalMinutes,
       minutesUsed: 0,
-      purchaseDate: new Date()
+      purchaseDate,
+      expirationDate,
+      freeSessionsRemaining: 2 // Both plans include 2 free sessions
     };
     
     // Save to Firestore
     const creditRef = doc(db, USERS_CREDITS_COLLECTION, creditsId);
     await setDoc(creditRef, {
       ...userCreditData,
-      purchaseDate: Timestamp.fromDate(userCreditData.purchaseDate)
+      purchaseDate: Timestamp.fromDate(userCreditData.purchaseDate),
+      expirationDate: Timestamp.fromDate(userCreditData.expirationDate)
     }, { merge: true });
     
     // Record activity
@@ -233,9 +241,69 @@ async function addCreditActivity(activity: Omit<CreditActivity, "id">): Promise<
 export async function hasEnoughCredits(userId: string, requiredCredits = 1): Promise<boolean> {
   try {
     const userCredits = await getUserCredits(userId);
-    return !!userCredits && userCredits.remainingCredits >= requiredCredits;
+    if (!userCredits) return false;
+    
+    // Check if credits have expired
+    if (new Date() > userCredits.expirationDate) return false;
+    
+    return userCredits.remainingCredits >= requiredCredits;
   } catch (error) {
     console.error("Error checking credits:", error);
+    return false;
+  }
+}
+
+/**
+ * Check if user has valid credits (either enough remaining or free sessions)
+ */
+export async function hasValidCredits(userId: string, requiredCredits = 1): Promise<{valid: boolean; hasFreeSession: boolean}> {
+  try {
+    const userCredits = await getUserCredits(userId);
+    if (!userCredits) return { valid: false, hasFreeSession: false };
+    
+    // Check if credits have expired
+    if (new Date() > userCredits.expirationDate) return { valid: false, hasFreeSession: false };
+    
+    const hasFreeSessions = userCredits.freeSessionsRemaining > 0;
+    const hasRemainingCredits = userCredits.remainingCredits >= requiredCredits;
+    
+    return { 
+      valid: hasFreeSessions || hasRemainingCredits,
+      hasFreeSession: hasFreeSessions
+    };
+  } catch (error) {
+    console.error("Error checking valid credits:", error);
+    return { valid: false, hasFreeSession: false };
+  }
+}
+
+/**
+ * Consume a free session for a user
+ */
+export async function consumeFreeSession(userId: string): Promise<boolean> {
+  try {
+    const userCredits = await getUserCredits(userId);
+    if (!userCredits || userCredits.freeSessionsRemaining <= 0) return false;
+    
+    // Update the document
+    const creditsRef = doc(db, USERS_CREDITS_COLLECTION, userCredits.id);
+    await updateDoc(creditsRef, {
+      freeSessionsRemaining: userCredits.freeSessionsRemaining - 1
+    });
+    
+    // Record the activity
+    await addCreditActivity({
+      userId,
+      activityType: "interview",
+      title: "Free Interview Session",
+      description: `Free interview session used (${userCredits.freeSessionsRemaining - 1} remaining)`,
+      creditsChange: 0, // No credits consumed
+      timestamp: new Date()
+    });
+    
+    return true;
+  } catch (error) {
+    console.error("Error consuming free session:", error);
     return false;
   }
 }

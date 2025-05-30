@@ -137,9 +137,28 @@ const CreditsDisplay = ({ userId }: CreditsDisplayProps) => {
               <div className={`text-sm ${percentCreditsRemaining < 30 ? 'text-red-400' : 'text-light-300'}`}>
                 {percentCreditsRemaining < 30 
                   ? "Running low on credits! Consider purchasing more."
-                  : `You have enough credits for ${userCredits?.remainingCredits || 0} more interviews.`
+                  : `You have enough credits for ${userCredits?.remainingCredits || 0} more interview minutes.`
                 }
               </div>
+              
+              {/* Expiration notice */}
+              {userCredits?.expirationDate && (
+                <div className="text-sm text-amber-400/90 flex items-center gap-1 mt-1">
+                  <Clock className="h-3.5 w-3.5" />
+                  <span>
+                    Credits expire on {new Date(userCredits.expirationDate).toLocaleDateString()}
+                  </span>
+                </div>
+              )}
+              
+              {/* Free sessions notice */}
+              {userCredits?.freeSessionsRemaining > 0 && (
+                <div className="text-sm text-emerald-400/90 flex items-center gap-1 mt-1">
+                  <span className="font-medium">
+                    {userCredits.freeSessionsRemaining} free {userCredits.freeSessionsRemaining === 1 ? 'session' : 'sessions'} remaining
+                  </span>
+                </div>
+              )}
               
               {percentCreditsRemaining < 30 && (
                 <Button 

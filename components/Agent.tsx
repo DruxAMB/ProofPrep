@@ -3,11 +3,13 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
 
 import { cn } from "@/lib/utils";
 import { vapi } from "@/lib/vapi.sdk";
 import { interviewer } from "@/constants";
 import { createFeedback } from "@/lib/actions/general.action";
+import { hasValidCredits, consumeCredits, consumeFreeSession } from "@/lib/actions/credit.action";
 
 enum CallStatus {
   INACTIVE = "INACTIVE",
@@ -119,6 +121,36 @@ const Agent = ({
     setCallStatus(CallStatus.CONNECTING);
 
     try {
+      // Skip credit check if no userId (shouldn't happen with auth middleware)
+      if (!userId) {
+        toast({
+          title: "Authentication Required",
+          description: "Please sign in to use the interview feature",
+          variant: "destructive",
+        });
+        setCallStatus(CallStatus.INACTIVE);
+        router.push("/sign-in?redirect=/interview");
+        return;
+      }
+
+      // Determine required credits based on interview type
+      const requiredCredits = type === "generate" ? 50 : 100; // 50 for generation, 100 for interview
+      
+      // Check if user has enough credits or free sessions
+      const { valid, hasFreeSession } = await hasValidCredits(userId, requiredCredits);
+      
+      if (!valid) {
+        toast({
+          title: "Insufficient Credits",
+          description: "You need more credits or a plan to use this feature. Please visit the pricing page.",
+          variant: "destructive",
+        });
+        setCallStatus(CallStatus.INACTIVE);
+        router.push("/pricing");
+        return;
+      }
+      
+      // Start the interview based on type
       if (type === "generate") {
         await vapi.start(process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ID!, {
           variableValues: {
@@ -140,9 +172,34 @@ const Agent = ({
           },
         });
       }
+      
+      // Successfully started - deduct credits or use free session
+      if (hasFreeSession) {
+        await consumeFreeSession(userId);
+        toast({
+          title: "Free Session Used",
+          description: "You are using one of your free interview sessions.",
+        });
+      } else {
+        // Calculate minutes based on credits (10 credits = 1 minute)
+        const minutesUsed = requiredCredits / 10;
+        const success = await consumeCredits(userId, interviewId || 'generated', requiredCredits, minutesUsed);
+        
+        if (success) {
+          toast({
+            title: "Credits Used",
+            description: `${requiredCredits} credits have been deducted from your account.`,
+          });
+        }
+      }
     } catch (error) {
       console.error("Failed to start call:", error);
       setCallStatus(CallStatus.INACTIVE);
+      toast({
+        title: "Error Starting Interview",
+        description: "There was an error starting the interview. Please try again.",
+        variant: "destructive",
+      });
     }
   };
 

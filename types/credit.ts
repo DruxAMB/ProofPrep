@@ -9,6 +9,8 @@ export interface UserCredit {
   totalMinutes: number; // Total minutes available based on plan
   minutesUsed: number; // Minutes consumed in interviews
   purchaseDate: Date;
+  expirationDate: Date; // When credits expire (2 months from purchase)
+  freeSessionsRemaining: number; // Number of free sessions available
 }
 
 export interface CreditActivity {

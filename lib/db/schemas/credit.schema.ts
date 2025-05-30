@@ -20,7 +20,9 @@ export const userCreditSchema = z.object({
   planType: z.enum(["standard", "pro"]),
   totalMinutes: z.number(),
   minutesUsed: z.number(),
-  purchaseDate: z.date()
+  purchaseDate: z.date(),
+  expirationDate: z.date(), // When credits expire (2 months from purchase)
+  freeSessionsRemaining: z.number() // Track free sessions
 });
 
 // Zod schema for credit activity
@@ -39,33 +41,37 @@ export const creditActivitySchema = z.object({
 // Credit plan defaults
 export const defaultCreditPlans = [
   {
-    id: "standard",
+    id: "standard-plan",
     name: "Standard Plan",
-    price: 29,
-    credits: 5,
-    minutesPerCredit: 45,
+    price: 9,
+    credits: 200,
+    minutesPerCredit: 0.1, // 10 minutes per 100 credits
     features: [
-      "5 interview credits",
-      "30-45 min per interview",
-      "Basic AI feedback",
-      "Technical & behavioral questions",
-      "Performance analytics"
+      "200 interview credits",
+      "20 connected interview minutes",
+      "2 free interview sessions",
+      "Interview feedback",
+      "Customized interview scenarios",
+      "Chat Support"
     ],
     isHighlighted: false
   },
   {
-    id: "pro",
+    id: "pro-plan",
     name: "Pro Plan",
-    price: 59,
-    credits: 12,
-    minutesPerCredit: 45,
+    price: 49,
+    credits: 1000,
+    minutesPerCredit: 0.1, // 10 minutes per 100 credits
     features: [
-      "12 interview credits",
-      "30-45 min per interview",
-      "Advanced AI feedback",
+      "1000 interview credits",
+      "100 connected interview minutes",
+      "2 free interview sessions", 
+      "Interview feedback",
       "Customized interview scenarios",
+      "Realtime chat with interviewer",
       "Detailed performance metrics",
-      "Interview recording feature"
+      "Interview recording",
+      "Chat Support"
     ],
     isHighlighted: true
   }
