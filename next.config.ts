@@ -30,9 +30,9 @@ const nextConfig: NextConfig = {
     });
     return config;
   },
-  experimental: {
-    nodeMiddleware: true,
-  },
+  // experimental: {
+  //   nodeMiddleware: true,
+  // },
   turbopack: {
     resolveAlias: {
       '@': './',
