@@ -12,10 +12,6 @@ import {
   LogOut,
 } from "lucide-react";
 import { toast } from "sonner";
-import {
-  ConnectWallet,
-  Wallet,
-} from "@coinbase/onchainkit/wallet";
 
 import {
   Popover,
@@ -248,9 +244,7 @@ export function SettingsModal() {
                         </p>
                       </div>
                       <div className="min-w-[180px] flex justify-end">
-                        <Wallet>
-                          <ConnectWallet />
-                        </Wallet>
+                      
                       </div>
                     </div>
                   </CardContent>
