@@ -35,7 +35,7 @@ const Dashboard = ({ user, userInterviews, allInterviews }: DashboardProps) => {
       <Sidebar user={user} />
       
       {/* Main Content */}
-      <div className="md:pl-[300px] p-6 pt-16 md:pt-6">
+      <div className="lg:pl-[300px] p-6 pt-16 lg:pt-6">
       <section className="card-cta">
         <div className="flex flex-col gap-6 max-w-lg">
           <h2>Nail Every Interview with AI Practice & Instant Feedback</h2>

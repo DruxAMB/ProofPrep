@@ -117,12 +117,12 @@ export default function Sidebar({ user }: SidebarProps) {
   return (
     <>
       {/* Mobile Menu Button */}
-      <div className="md:hidden fixed top-4 left-4 z-50">
+      <div className="lg:hidden fixed top-4 left-4 z-50">
         <Button
           variant="ghost"
           size="icon"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="bg-dark-300/50 hover:bg-dark-300/70 text-light-100 rounded-full"
+          className="bg-dark-300/50 hover:bg-dark-300/70 text-light-100 rounded-full cursor-pointer"
         >
           {isMobileMenuOpen ? (
             <X className="h-5 w-5" />
@@ -137,13 +137,13 @@ export default function Sidebar({ user }: SidebarProps) {
         className={cn(
           "fixed inset-y-0 left-0 z-40 bg-dark-300/80 backdrop-blur-sm border-r border-dark-300/50 flex flex-col",
           "transition-all duration-300 ease-in-out",
-          "md:w-64 md:translate-x-0",
-          "w-72 sm:w-80 md:w-64",
-          isMobileMenuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0",
+          "lg:w-64 lg:translate-x-0",
+          "w-72 sm:w-80 lg:w-64",
+          isMobileMenuOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0",
         )}
       >
       {/* User Profile Section */}
-      <div className="p-4 pt-16 md:pt-4 border-b border-dark-300/50">
+      <div className="p-4 pt-16 lg:pt-4 border-b border-dark-300/50">
         <div className="flex items-center space-x-3">
           <div className="size-10 rounded-full bg-gradient-to-br from-primary-200/20 to-primary-100/40 flex items-center justify-center">
             {user?.profileImage ? (
@@ -178,7 +178,7 @@ export default function Sidebar({ user }: SidebarProps) {
                   key={item.name}
                   href={item.href}
                   className={cn(
-                    "flex items-center gap-3 px-3 py-2 text-sm rounded-md transition-colors",
+                    "flex items-center gap-3 px-3 py-2 text-sm rounded-lg transition-colors",
                     item.active
                       ? "bg-primary-200/10 text-primary-100"
                       : "text-light-200 hover:text-light-100 hover:bg-dark-200/50"
@@ -198,7 +198,7 @@ export default function Sidebar({ user }: SidebarProps) {
         <button
           onClick={handleLogout}
           disabled={isLoading}
-          className="flex items-center justify-center gap-3 w-full px-3 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-dark-200/50 rounded-md transition-colors"
+          className="flex items-center justify-start gap-3 w-full px-3 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-dark-200/50 rounded-lg transition-colors cursor-pointer"
         >
           {isLoading ? (
             <span className="animate-spin h-4 w-4 border-2 border-current border-t-transparent rounded-full" />
@@ -213,13 +213,13 @@ export default function Sidebar({ user }: SidebarProps) {
       {/* Overlay for mobile */}
       {isMobileMenuOpen && (
         <div 
-          className="md:hidden fixed inset-0 bg-black/50 z-30"
+          className="lg:hidden fixed inset-0 bg-black/50 z-30"
           onClick={() => setIsMobileMenuOpen(false)}
         />
       )}
       
       {/* Content padding for fixed sidebar */}
-      <div className="md:pl-64" />
+      <div className="lg:pl-64" />
     </>
   );
 }
