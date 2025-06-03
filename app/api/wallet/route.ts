@@ -30,6 +30,12 @@ export async function GET(request: NextRequest) {
     }
 
     // Get wallet account from CDP
+    console.log(`Attempting to get wallet for user ID: ${userId}`);
+    
+    // Log wallet address from database directly
+    const { getWalletAddress } = await import('@/lib/db/wallet');
+    const walletRecord = await getWalletAddress(userId);
+    console.log('Wallet record from database:', walletRecord);
     const account = await getEvmAccountFromId(userId);
 
     // If no account exists, return empty response

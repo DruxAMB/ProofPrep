@@ -24,18 +24,29 @@ const cdpClient: CdpClient = new CdpClient({
  * @returns EvmServerAccount object from CDP SDK
  */
 export async function getOrCreateEvmAccountFromId(params: GetOrCreateEvmAccountParams): Promise<EvmServerAccount> {
+  console.log(`CDP: getOrCreateEvmAccountFromId called for account ID: ${params.accountId}`);
   try {
     // Check if user already has a wallet
+    console.log(`CDP: Checking if user ${params.accountId} already has a wallet`);
     const existingWallet = await getWalletAddress(params.accountId);
+    console.log(`CDP: Existing wallet check result:`, existingWallet);
     
     if (existingWallet) {
       // Return the existing wallet
-      return await cdpClient.evm.getAccount({ address: existingWallet.address as Address });
+      console.log(`CDP: Found existing wallet with address ${existingWallet.address}, retrieving from CDP`);
+      const account = await cdpClient.evm.getAccount({ address: existingWallet.address as Address });
+      console.log(`CDP: Retrieved existing account from CDP:`, account.address);
+      return account;
     }
 
     // Create new wallet only if user doesn't have one
+    console.log(`CDP: No existing wallet found, creating new account with CDP SDK`);
     const evmAccount = await cdpClient.evm.createAccount();
+    console.log(`CDP: Created new CDP account with address: ${evmAccount.address}`);
+    
+    console.log(`CDP: Storing new wallet address in Firestore for user ${params.accountId}`);
     await createWallet(params.accountId, evmAccount.address);
+    console.log(`CDP: Successfully stored wallet in Firestore`);
 
     return evmAccount;
   } catch (error) {

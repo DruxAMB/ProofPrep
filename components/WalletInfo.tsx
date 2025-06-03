@@ -20,21 +20,37 @@ export function WalletInfo() {
   // Fetch wallet address and balance when component mounts
   useEffect(() => {
     async function fetchWalletInfo() {
-      if (!user?.uid) return;
+      if (!user?.uid) {
+        console.log('No user ID available');
+        setIsLoading(false);
+        return;
+      }
+      
+      console.log(`Fetching wallet info for user: ${user.uid}`);
       
       try {
         // Fetch wallet address from server
-        const response = await fetch(`/api/wallet?userId=${user.uid}`);
+        const url = `/api/wallet?userId=${user.uid}`;
+        console.log(`Making request to: ${url}`);
+        const response = await fetch(url);
+        
+        console.log(`Response status: ${response.status}`);
         
         if (!response.ok) {
-          throw new Error("Failed to fetch wallet info");
+          const errorText = await response.text();
+          console.error(`API error response: ${errorText}`);
+          throw new Error(`Failed to fetch wallet info: ${response.status}`);
         }
         
         const data = await response.json();
+        console.log('Wallet API response:', data);
         
         if (data.address) {
+          console.log(`Setting wallet address: ${data.address}`);
           setWalletAddress(data.address);
           setBalance(data.balance || "0.0");
+        } else {
+          console.log('No wallet address in response');
         }
       } catch (error) {
         console.error("Error fetching wallet info:", error);

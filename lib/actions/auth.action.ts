@@ -45,9 +45,21 @@ export async function signUp(params: { uid: string; name: string; email: string;
     });
     
     // Create wallet address for the user
+    console.log(`Attempting to create wallet for new user ${uid}`);
     try {
-      const walletAccount = await getOrCreateEvmAccountFromId({ accountId: uid });
-      console.log(`Created wallet address ${walletAccount.address} for user ${uid}`);
+      // First check if user already has a wallet
+      const { getWalletAddress } = await import('@/lib/db/wallet');
+      const existingWallet = await getWalletAddress(uid);
+      console.log(`Existing wallet check for user ${uid}:`, existingWallet);
+      
+      // Create wallet if it doesn't exist
+      if (!existingWallet) {
+        console.log(`No existing wallet found, creating new wallet for user ${uid}`);
+        const walletAccount = await getOrCreateEvmAccountFromId({ accountId: uid });
+        console.log(`Created wallet address ${walletAccount.address} for user ${uid}`);
+      } else {
+        console.log(`User ${uid} already has wallet address ${existingWallet.address}`);
+      }
     } catch (walletError) {
       // Log error but don't fail the signup process
       console.error("Error creating wallet for user:", walletError);
