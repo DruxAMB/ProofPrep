@@ -29,7 +29,7 @@ export default function Sidebar({ user }: SidebarProps) {
   useEffect(() => {
     const checkIfMobile = () => {
       setIsMobile(window.innerWidth < 768);
-    };
+    }; isMobile
     
     // Initial check
     checkIfMobile();
