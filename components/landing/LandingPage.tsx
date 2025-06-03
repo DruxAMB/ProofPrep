@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { ArrowRight, CheckCircle, Play, X } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { VisuallyHidden } from "@/components/ui/visually-hidden";
+import Link from "next/link";
 
 const LandingPage = () => {
   const router = useRouter();
@@ -23,6 +24,13 @@ const LandingPage = () => {
   
   return (
     <div className="flex flex-col min-h-screen max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Nave Bar  */}
+      <nav className="flex items-center justify-between gap-2 rounded-full border-2 border-primary-200/50 p-2 px-4">
+          <Link href="/" className="flex items-center gap-2">
+            <Image src="/logo.svg" alt="ProofPrep Logo" width={38} height={32} />
+            <h2 className="text-primary-100">ProofPrep</h2>
+          </Link>
+        </nav>
       {/* Hero Section - Clerk-inspired clean design */}
       <section className="flex flex-col items-center text-center pt-16 pb-20">
         <div className="space-y-6 max-w-4xl">

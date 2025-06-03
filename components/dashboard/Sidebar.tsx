@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import { User, Wallet, CreditCard, Award, Settings, LogOut } from "lucide-react";
+import { User, Wallet, CreditCard, Award, Settings, LogOut, LayoutDashboard } from "lucide-react";
 import { toast } from "sonner";
 import { signOut } from "@/lib/actions/auth.action";
 import { cn } from "@/lib/utils";
@@ -38,25 +38,36 @@ export default function Sidebar({ user }: SidebarProps) {
 
   const sidebarItems = [
     {
+      title: "",
+      items: [
+        {
+          name: "Dashboard",
+          icon: <LayoutDashboard className="h-4 w-4" />,
+          href: "/",
+          active: pathname === "/",
+        },
+      ],
+    },
+    {
       title: "Account",
       items: [
         {
           name: "Profile",
           icon: <User className="h-4 w-4" />,
-          href: "/dashboard/profile",
-          active: pathname === "/dashboard/profile",
+          href: "/profile",
+          active: pathname === "/profile",
         },
         {
           name: "Wallet",
           icon: <Wallet className="h-4 w-4" />,
-          href: "/dashboard/wallet",
-          active: pathname === "/dashboard/wallet",
+          href: "/wallet",
+          active: pathname === "/wallet",
         },
         {
           name: "Settings",
           icon: <Settings className="h-4 w-4" />,
-          href: "/dashboard/settings",
-          active: pathname === "/dashboard/settings",
+          href: "/settings",
+          active: pathname === "/settings",
         },
       ],
     },
@@ -66,14 +77,14 @@ export default function Sidebar({ user }: SidebarProps) {
         {
           name: "Usage",
           icon: <Award className="h-4 w-4" />,
-          href: "/dashboard/usage",
-          active: pathname === "/dashboard/usage",
+          href: "/usage",
+          active: pathname === "/usage",
         },
         {
           name: "Billing",
           icon: <CreditCard className="h-4 w-4" />,
-          href: "/dashboard/billing",
-          active: pathname === "/dashboard/billing",
+          href: "/billing",
+          active: pathname === "/billing",
         },
       ],
     },

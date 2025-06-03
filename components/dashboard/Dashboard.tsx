@@ -30,12 +30,12 @@ const Dashboard = ({ user, userInterviews, allInterviews }: DashboardProps) => {
   const hasUpcomingInterviews = (allInterviews && allInterviews.length > 0) || false;
 
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex h-screen overflow-hidden overflow-y-auto">
       {/* Sidebar */}
       <Sidebar user={user} />
       
       {/* Main Content */}
-      <div className="flex-1 overflow-y-auto p-6">
+      <div className="flex-1 p-6">
       <section className="card-cta">
         <div className="flex flex-col gap-6 max-w-lg">
           <h2>Nail Every Interview with AI Practice & Instant Feedback</h2>
@@ -60,28 +60,6 @@ const Dashboard = ({ user, userInterviews, allInterviews }: DashboardProps) => {
           className="max-sm:hidden"
           unoptimized
         />
-      </section>
-
-      {/* Credits and Subscription Section */}
-      <section className="mt-12 mb-8">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-bold bg-gradient-to-r from-white to-light-300 bg-clip-text text-transparent">Your Subscription</h2>
-          <LoadingLink
-            href="/pricing"
-            variant="outline"
-            className="text-sm border-dark-300 hover:border-primary-200 hover:bg-dark-300/30"
-            loadingText="Loading..."
-          >
-            Upgrade Plan
-          </LoadingLink>
-        </div>
-        {user && user.id ? (
-          <CreditsDisplay userId={user.id} />
-        ) : (
-          <div className="card-border w-full p-8 text-center">
-            <p className="text-lg">Sign in to view your credits</p>
-          </div>
-        )}
       </section>
 
       <section className="flex flex-col gap-6 mt-8">
