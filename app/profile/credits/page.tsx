@@ -13,7 +13,7 @@ export default async function CreditsPage() {
   
   // Redirect to sign-in if user is not authenticated
   if (!user) {
-    redirect("/sign-in");
+    redirect("/");
   }
   
   return (

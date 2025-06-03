@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getEvmAccountFromId } from "@/lib/cdp";
+import { getEvmAccountFromId, getOrCreateEvmAccountFromId } from "@/lib/cdp";
 import { auth } from "@/firebase/admin";
+import { getWalletAddress } from "@/lib/db/wallet";
 
 /**
  * API route to get wallet information for a user
@@ -32,13 +33,31 @@ export async function GET(request: NextRequest) {
     // Get wallet account from CDP
     console.log(`Attempting to get wallet for user ID: ${userId}`);
     
-    // Log wallet address from database directly
-    const { getWalletAddress } = await import('@/lib/db/wallet');
+    // Check if user has a wallet address in the database
     const walletRecord = await getWalletAddress(userId);
     console.log('Wallet record from database:', walletRecord);
-    const account = await getEvmAccountFromId(userId);
+    
+    let account;
+    
+    // If no wallet exists, create one
+    if (!walletRecord) {
+      console.log(`No wallet found for user ${userId}, creating a new one...`);
+      try {
+        account = await getOrCreateEvmAccountFromId({ accountId: userId });
+        console.log(`Created new wallet with address ${account.address} for user ${userId}`);
+      } catch (error) {
+        console.error(`Error creating wallet for user ${userId}:`, error);
+        return NextResponse.json(
+          { error: "Failed to create wallet" },
+          { status: 500 }
+        );
+      }
+    } else {
+      // Get existing wallet
+      account = await getEvmAccountFromId(userId);
+    }
 
-    // If no account exists, return empty response
+    // If no account exists after creation attempt, return empty wallet info
     if (!account) {
       return NextResponse.json({ address: null, balance: "0.0" });
     }

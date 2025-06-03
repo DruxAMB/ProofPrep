@@ -3,6 +3,7 @@ import LoadingLink from "@/components/ui/loading-link";
 import InterviewCard from "@/components/InterviewCard";
 import CreditsDisplay from "@/components/credits/CreditsDisplay";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import Sidebar from "@/components/dashboard/Sidebar";
 
 // Adding a basic Interview type - you may already have this defined elsewhere
 interface Interview {
@@ -29,7 +30,12 @@ const Dashboard = ({ user, userInterviews, allInterviews }: DashboardProps) => {
   const hasUpcomingInterviews = (allInterviews && allInterviews.length > 0) || false;
 
   return (
-    <>
+    <div className="flex h-screen overflow-hidden">
+      {/* Sidebar */}
+      <Sidebar user={user} />
+      
+      {/* Main Content */}
+      <div className="flex-1 overflow-y-auto p-6">
       <section className="card-cta">
         <div className="flex flex-col gap-6 max-w-lg">
           <h2>Nail Every Interview with AI Practice & Instant Feedback</h2>
@@ -135,7 +141,8 @@ const Dashboard = ({ user, userInterviews, allInterviews }: DashboardProps) => {
           </TabsContent>
         </Tabs>
       </section>
-    </>
+      </div>
+    </div>
   );
 };
 
