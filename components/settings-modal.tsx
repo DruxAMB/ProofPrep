@@ -28,6 +28,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { signOut } from "@/lib/actions/auth.action";
+import { WalletInfo } from "@/components/WalletInfo";
 
 export function SettingsModal() {
   const router = useRouter();
@@ -157,37 +158,18 @@ export function SettingsModal() {
               </button>
             </div>
 
-            {/* Content */}
+            {/* Tab Content */}
             <div className="space-y-4">
               {/* Profile Section */}
               {activeTab === "profile" && (
                 <Card className="border-dark-300/30 bg-dark-300/20">
                   <CardHeader className="pb-2">
-                    <CardTitle className="text-lg">
-                      Profile Information
-                    </CardTitle>
+                    <CardTitle className="text-lg">Profile Settings</CardTitle>
                     <CardDescription>
                       Manage your account settings and preferences
                     </CardDescription>
                   </CardHeader>
                   <Separator className="bg-dark-300/30" />
-                  <CardContent className="pt-4">
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-center p-4">
-                        <div className="text-center">
-                          <div className="size-20 rounded-full bg-gradient-to-br from-primary-200/20 to-primary-100/40 mx-auto flex items-center justify-center mb-3">
-                            <User className="h-8 w-8 text-primary-100" />
-                          </div>
-                          <p className="text-light-200 text-base font-medium">
-                            Profile settings coming soon
-                          </p>
-                          <p className="text-light-300 text-xs mt-1">
-                            Customize your profile and preferences
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
                   <CardContent className="pt-4">
                     <div className="space-y-4">
                       <div className="flex flex-col">
@@ -227,26 +209,14 @@ export function SettingsModal() {
               {activeTab === "wallet" && (
                 <Card className="border-dark-300/30 bg-dark-300/20">
                   <CardHeader className="pb-2">
-                    <CardTitle className="text-lg">Wallet Connection</CardTitle>
+                    <CardTitle className="text-lg">Wallet</CardTitle>
                     <CardDescription>
-                      Connect your wallet to access Web3 features on Base
+                      Your ProofPrep wallet on Base Sepolia
                     </CardDescription>
                   </CardHeader>
                   <Separator className="bg-dark-300/30" />
                   <CardContent className="pt-4">
-                    <div className="md:flex items-center justify-between">
-                      <div>
-                        <h3 className="font-medium text-sm">
-                          Connection Status
-                        </h3>
-                        <p className="text-light-300 text-xs mt-1">
-                          Connect your wallet to access Web3 features
-                        </p>
-                      </div>
-                      <div className="min-w-[180px] flex justify-end">
-                      
-                      </div>
-                    </div>
+                    <WalletInfo />
                   </CardContent>
                 </Card>
               )}
@@ -255,9 +225,7 @@ export function SettingsModal() {
               {activeTab === "achievements" && (
                 <Card className="border-dark-300/30 bg-dark-300/20">
                   <CardHeader className="pb-2">
-                    <CardTitle className="text-lg">
-                      Interview Achievements
-                    </CardTitle>
+                    <CardTitle className="text-lg">Achievements</CardTitle>
                     <CardDescription>
                       Mint your interview achievements as verifiable credentials
                       on Base

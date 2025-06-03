@@ -2,6 +2,7 @@
 
 import { auth, db } from "@/firebase/admin";
 import { cookies } from "next/headers";
+import { getOrCreateEvmAccountFromId } from "@/lib/cdp";
 
 // Session duration (1 week)
 const SESSION_DURATION = 60 * 60 * 24 * 7;
@@ -42,6 +43,15 @@ export async function signUp(params: { uid: string; name: string; email: string;
       profileImage: profileImage || `https://ui-avatars.com/api/?name=${encodeURIComponent(name.trim())}&background=0D8ABC&color=fff&size=128&bold=true`,
       createdAt: new Date().toISOString(),
     });
+    
+    // Create wallet address for the user
+    try {
+      const walletAccount = await getOrCreateEvmAccountFromId({ accountId: uid });
+      console.log(`Created wallet address ${walletAccount.address} for user ${uid}`);
+    } catch (walletError) {
+      // Log error but don't fail the signup process
+      console.error("Error creating wallet for user:", walletError);
+    }
 
     return { success: true, message: "User created successfully" };
   } catch (error) {
