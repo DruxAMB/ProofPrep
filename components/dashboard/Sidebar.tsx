@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import { User, Wallet, CreditCard, Award, Settings, LogOut, LayoutDashboard } from "lucide-react";
+import { User, Wallet, CreditCard, Award, Settings, LogOut, LayoutDashboard, Menu, X } from "lucide-react";
 import { toast } from "sonner";
 import { signOut } from "@/lib/actions/auth.action";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 interface SidebarProps {
   user: {
@@ -21,6 +22,29 @@ export default function Sidebar({ user }: SidebarProps) {
   const router = useRouter();
   const pathname = usePathname();
   const [isLoading, setIsLoading] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  
+  // Handle window resize to determine if mobile view
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    // Initial check
+    checkIfMobile();
+    
+    // Add event listener
+    window.addEventListener('resize', checkIfMobile);
+    
+    // Cleanup
+    return () => window.removeEventListener('resize', checkIfMobile);
+  }, []);
+  
+  // Close mobile menu when navigating
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
 
   const handleLogout = async () => {
     try {
@@ -91,9 +115,35 @@ export default function Sidebar({ user }: SidebarProps) {
   ];
 
   return (
-    <div className="w-64 h-full bg-dark-300/30 border-r border-dark-300/50 flex flex-col">
+    <>
+      {/* Mobile Menu Button */}
+      <div className="md:hidden fixed top-4 left-4 z-50">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className="bg-dark-300/50 hover:bg-dark-300/70 text-light-100 rounded-full"
+        >
+          {isMobileMenuOpen ? (
+            <X className="h-5 w-5" />
+          ) : (
+            <Menu className="h-5 w-5" />
+          )}
+        </Button>
+      </div>
+      
+      {/* Sidebar - Desktop: fixed, Mobile: slide-in */}
+      <div 
+        className={cn(
+          "fixed inset-y-0 left-0 z-40 bg-dark-300/80 backdrop-blur-sm border-r border-dark-300/50 flex flex-col",
+          "transition-all duration-300 ease-in-out",
+          "md:w-64 md:translate-x-0",
+          "w-72 sm:w-80 md:w-64",
+          isMobileMenuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0",
+        )}
+      >
       {/* User Profile Section */}
-      <div className="p-4 border-b border-dark-300/50">
+      <div className="p-4 pt-16 md:pt-4 border-b border-dark-300/50">
         <div className="flex items-center space-x-3">
           <div className="size-10 rounded-full bg-gradient-to-br from-primary-200/20 to-primary-100/40 flex items-center justify-center">
             {user?.profileImage ? (
@@ -144,11 +194,11 @@ export default function Sidebar({ user }: SidebarProps) {
       </div>
 
       {/* Logout Button */}
-      <div className="p-3 border-t border-dark-300/50">
+      <div className="p-3 border-t border-dark-300/50 mt-auto">
         <button
           onClick={handleLogout}
           disabled={isLoading}
-          className="flex items-center gap-3 w-full px-3 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-dark-200/50 rounded-md transition-colors"
+          className="flex items-center justify-center gap-3 w-full px-3 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-dark-200/50 rounded-md transition-colors"
         >
           {isLoading ? (
             <span className="animate-spin h-4 w-4 border-2 border-current border-t-transparent rounded-full" />
@@ -158,6 +208,18 @@ export default function Sidebar({ user }: SidebarProps) {
           <span>Logout</span>
         </button>
       </div>
-    </div>
+      </div>
+      
+      {/* Overlay for mobile */}
+      {isMobileMenuOpen && (
+        <div 
+          className="md:hidden fixed inset-0 bg-black/50 z-30"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+      
+      {/* Content padding for fixed sidebar */}
+      <div className="md:pl-64" />
+    </>
   );
 }

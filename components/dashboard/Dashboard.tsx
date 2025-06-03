@@ -30,12 +30,12 @@ const Dashboard = ({ user, userInterviews, allInterviews }: DashboardProps) => {
   const hasUpcomingInterviews = (allInterviews && allInterviews.length > 0) || false;
 
   return (
-    <div className="flex h-screen overflow-hidden overflow-y-auto">
+    <div className="min-h-screen">
       {/* Sidebar */}
       <Sidebar user={user} />
       
       {/* Main Content */}
-      <div className="flex-1 p-6">
+      <div className="md:pl-[300px] p-6 pt-16 md:pt-6">
       <section className="card-cta">
         <div className="flex flex-col gap-6 max-w-lg">
           <h2>Nail Every Interview with AI Practice & Instant Feedback</h2>

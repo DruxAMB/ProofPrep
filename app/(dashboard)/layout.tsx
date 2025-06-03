@@ -9,13 +9,15 @@ export default async function DashboardLayout({
   const user = await getCurrentUser();
 
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="min-h-screen">
       {/* Sidebar */}
       <Sidebar user={user} />
       
       {/* Main Content */}
-      <div className="flex-1 overflow-y-auto p-6">
-        {children}
+      <div className="md:pl-64 p-6 pt-16 md:pt-6">
+        <div className="max-w-7xl mx-auto">
+          {children}
+        </div>
       </div>
     </div>
   );
