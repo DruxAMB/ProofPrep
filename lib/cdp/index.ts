@@ -2,12 +2,20 @@ import { CdpClient, EvmServerAccount } from "@coinbase/cdp-sdk";
 import { getWalletAddress, createWallet } from '@/lib/db/wallet';
 import { GetOrCreateEvmAccountParams } from "@/types/cdp";
 import { Address } from "viem";
+import { CDP_CONFIG, validateCdpConfig } from "./config";
+
+// Validate CDP configuration
+try {
+  validateCdpConfig();
+} catch (error) {
+  console.error('CDP SDK configuration error:', error);
+}
 
 // Initialize CDP client with environment variables
 const cdpClient: CdpClient = new CdpClient({
-  apiKeyId: process.env.CDP_API_KEY_ID,
-  apiKeySecret: process.env.CDP_API_KEY_SECRET,
-  walletSecret: process.env.CDP_WALLET_SECRET,
+  apiKeyId: CDP_CONFIG.apiKeyId,
+  apiKeySecret: CDP_CONFIG.apiKeySecret,
+  walletSecret: CDP_CONFIG.walletSecret,
 });
 
 /**
