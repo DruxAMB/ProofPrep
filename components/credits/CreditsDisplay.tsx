@@ -246,6 +246,10 @@ const CreditsDisplay = ({ userId }: CreditsDisplayProps) => {
             <div className="flex justify-center py-8">
               <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-300"></div>
             </div>
+          ) : error ? (
+            <div className="text-center py-8 text-red-400">
+              <p>{error}</p>
+            </div>
           ) : activities.length === 0 ? (
             <div className="text-center py-8 text-light-400">
               <p>No activity yet. Start using ProofPrep to see your activity here.</p>
