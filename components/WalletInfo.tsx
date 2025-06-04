@@ -125,7 +125,7 @@ export function WalletInfo() {
         </div>
       </div>
       <div className="text-xs text-light-300 px-1">
-        Your wallet is managed by ProofPrep on Base Sepolia
+        Your wallet is managed by ProofPrep on Base
       </div>
     </div>
   );

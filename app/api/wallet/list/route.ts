@@ -1,17 +1,30 @@
 import { NextResponse } from 'next/server';
 import { cdpClient } from '@/lib/cdp';
+import { createPublicClient, http } from 'viem';
+import { base } from 'viem/chains';
+
+// USDC contract address on Base
+const USDC_ADDRESS = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
+
+// Create viem public client for Base mainnet
+const publicClient = createPublicClient({
+  chain: base,
+  transport: http(),
+});
 
 /**
  * GET handler for listing all wallet accounts
- * For development only - no auth check in this version
+ * For development, this endpoint is accessible to everyone
+ * TODO: Add admin-only authentication before production
  */
 export async function GET(request: Request) {
   try {
-    // For development, we're skipping auth checks
-    // In production, implement proper authentication here
+    // Authentication check removed for development
+    // Will add proper admin-only authentication later
     
     console.log('Starting CDP wallet listing...');
     let walletAddresses = [];
+    let totalBalance = BigInt(0);
     
     // Get initial response
     let response = await cdpClient.evm.listAccounts();
@@ -19,12 +32,43 @@ export async function GET(request: Request) {
     
     // Paginate through all accounts using the example pattern
     while (true) {
-      // Log each account address
+      // Process each account
       for (const account of response.accounts) {
         console.log('EVM account:', account.address);
-        walletAddresses.push({
-          address: account.address
-        });
+        
+        // Get USDC balance for this address using viem
+        try {
+          // Read balance using ERC20 balanceOf function
+          const balance = await publicClient.readContract({
+            address: USDC_ADDRESS,
+            abi: [
+              {
+                name: 'balanceOf',
+                type: 'function',
+                stateMutability: 'view',
+                inputs: [{ name: 'account', type: 'address' }],
+                outputs: [{ name: 'balance', type: 'uint256' }],
+              },
+            ],
+            functionName: 'balanceOf',
+            args: [account.address],
+          });
+          
+          // USDC has 6 decimal places (not 18 like ETH)
+          totalBalance += balance;
+          
+          walletAddresses.push({
+            address: account.address,
+            balance: balance.toString()
+          });
+        } catch (error) {
+          console.error(`Error getting balance for ${account.address}:`, error);
+          walletAddresses.push({
+            address: account.address,
+            balance: '0'
+          });
+        }
+        
         walletCount++;
       }
       
@@ -39,10 +83,17 @@ export async function GET(request: Request) {
     }
     
     console.log(`Total wallets found: ${walletCount}`);
+    console.log(`Total USDC balance: ${totalBalance}`);
+    
+    // Convert to USDC for easier reading (1 USDC = 10^6 units)
+    const totalBalanceInUSDC = Number(totalBalance) / 10**6;
     
     return NextResponse.json({ 
       wallets: walletAddresses, 
-      count: walletCount 
+      count: walletCount,
+      totalBalance: totalBalance.toString(),
+      totalBalanceInUSDC,
+      tokenSymbol: 'USDC'
     }, { status: 200 });
   } catch (error) {
     console.error('Error in wallet list API:', error);

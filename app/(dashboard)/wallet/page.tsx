@@ -14,7 +14,7 @@ export default async function WalletPage() {
         <CardHeader className="pb-2">
           <CardTitle className="text-lg">Your Wallet</CardTitle>
           <CardDescription>
-            Your ProofPrep wallet on Base Sepolia
+            Your ProofPrep wallet on Base
           </CardDescription>
         </CardHeader>
         <Separator className="bg-dark-300/30" />

@@ -34,7 +34,7 @@ export async function createWallet(userId: string, address: string) {
     await db.collection('wallet_addresses').add({
       user_id: userId,
       address: address,
-      network: 'base-sepolia',
+      network: 'base',
       created_at: FieldValue.serverTimestamp()
     });
   } catch (error) {
