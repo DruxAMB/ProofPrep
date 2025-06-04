@@ -5,7 +5,9 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
   return (
     <>
       <Navbar />
-      {children}
+      <div className="pt-28"> {/* Add padding-top to account for fixed navbar with some extra space */}
+        {children}
+      </div>
     </>
   );
 }

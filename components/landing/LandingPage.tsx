@@ -38,7 +38,7 @@ const LandingPage = () => {
           <div className="flex flex-col sm:flex-row justify-center gap-4 pt-4">
             <Button 
               onClick={() => router.push("/sign-up")} 
-              className="btn-primary group relative overflow-hidden px-8 py-6 text-lg transition-all duration-300 ease-in-out"
+              className="btn-primary group relative overflow-hidden px-8 py-6 text-lg transition-all duration-300 ease-in-out w-full sm:w-fit"
             >
               <span className="relative z-10 flex items-center gap-1.5 transition-transform duration-300 group-hover:translate-x-1">
                 Get Started <ArrowRight className="h-4 w-4" />
