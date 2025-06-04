@@ -36,7 +36,7 @@ const Navbar = () => {
   return (
     <div className="fixed top-0 left-0 right-0 z-50 flex justify-center px-4 sm:px-6 lg:px-8 py-4 transition-all duration-500">
       <nav 
-        className={`border border-primary-100/40 rounded-full backdrop-blur-md transition-all duration-500 w-full ${isScrolled ? 'max-w-[1000px] shadow-md' : 'max-w-[1400px]'}`}
+        className={`border z-50 border-primary-100/40 rounded-full backdrop-blur-md transition-all duration-500 w-full ${isScrolled ? 'max-w-[1000px] shadow-md' : 'max-w-[1400px]'}`}
       >
         <div className="px-5 py-3 flex items-center justify-between">
         {/* Logo */}
@@ -76,14 +76,8 @@ const Navbar = () => {
 
         {/* Mobile Menu Button */}
         <div className="flex items-center md:hidden">
-          <Button 
-            onClick={handleGetStarted}
-            className={`mr-2 bg-primary-200 hover:bg-primary-100 text-dark-100 font-medium transition-all cursor-pointer ${isScrolled ? 'text-sm px-3 py-1' : 'px-4 py-1.5'}`}
-          >
-            Get Started
-          </Button>
           <button 
-            className="p-2 rounded-md hover:bg-dark-300/30 transition-colors"
+            className="p-2 rounded-md hover:bg-dark-300/30 transition-colors cursor-pointer"
             onClick={toggleMobileMenu}
             aria-label="Toggle menu"
           >
@@ -95,7 +89,7 @@ const Navbar = () => {
 
       {/* Mobile Menu Dropdown */}
       <div 
-        className={`md:hidden absolute left-0 right-0 bg-dark-100/95 border border-primary-100/40 rounded-b-xl mx-4 backdrop-blur-md shadow-md px-4 py-4 transition-all duration-300 ${isMobileMenuOpen ? 'top-[4.5rem] opacity-100' : '-top-96 opacity-0 pointer-events-none'}`}
+        className={`md:hidden absolute left-0 right-0 bg-dark-100/10 border border-primary-100/40 rounded-4xl mx-4 backdrop-blur-md shadow-md px-4 py-4 transition-all duration-300 ${isMobileMenuOpen ? 'top-[5rem] opacity-100' : '-top-96 opacity-0 pointer-events-none'}`}
       >
         <div className="flex flex-col space-y-4">
           <Link 
@@ -119,6 +113,18 @@ const Navbar = () => {
           >
             Pricing
           </Link>
+          
+          <div className="pt-2 border-t border-dark-300/30 mt-2">
+            <Button 
+              onClick={() => {
+                handleGetStarted();
+                setIsMobileMenuOpen(false);
+              }}
+              className="w-full bg-primary-200 hover:bg-primary-100 text-dark-100 font-medium transition-all cursor-pointer py-2 mt-2"
+            >
+              Get Started
+            </Button>
+          </div>
         </div>
       </div>
     </div>

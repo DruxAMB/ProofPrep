@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
@@ -12,7 +12,6 @@ const LandingPage = () => {
   const router = useRouter();
   const [videoOpen, setVideoOpen] = useState(false);
   const [videoLoading, setVideoLoading] = useState(true);
-  const featuresRef = useRef<HTMLDivElement>(null);
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -22,7 +21,7 @@ const LandingPage = () => {
   };
   
   return (
-    <div className="flex flex-col min-h-screen max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="flex flex-col min-h-screen max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 scroll-smooth">
       {/* Hero Section - Clerk-inspired clean design */}
       <section className="flex flex-col items-center text-center pt-16 pb-20">
         <div className="space-y-6 max-w-4xl">
