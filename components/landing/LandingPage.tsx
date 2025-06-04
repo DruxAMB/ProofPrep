@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation";
 import { ArrowRight, CheckCircle, Play, X } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { VisuallyHidden } from "@/components/ui/visually-hidden";
-import Link from "next/link";
 
 const LandingPage = () => {
   const router = useRouter();
@@ -24,13 +23,6 @@ const LandingPage = () => {
   
   return (
     <div className="flex flex-col min-h-screen max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-      {/* Nave Bar  */}
-      <nav className="flex items-center justify-between gap-2 rounded-full border-2 border-primary-200/50 p-2 px-4">
-          <Link href="/" className="flex items-center gap-2">
-            <Image src="/logo.svg" alt="ProofPrep Logo" width={38} height={32} />
-            <h2 className="text-primary-100">ProofPrep</h2>
-          </Link>
-        </nav>
       {/* Hero Section - Clerk-inspired clean design */}
       <section className="flex flex-col items-center text-center pt-16 pb-20">
         <div className="space-y-6 max-w-4xl">
@@ -138,10 +130,44 @@ const LandingPage = () => {
       </section>
       
       {/* How It Works - Clean, spaced sections */}
-      <section id="how-it-works" className="py-24" ref={featuresRef}>
-        <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold mb-4">How It Works</h2>
-          <p className="text-light-300 max-w-2xl mx-auto">Our AI-powered platform makes interview practice effective and actionable</p>
+      <section id="how-it-works" className="py-16">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold mb-4">How ProofPrep Works</h2>
+          <p className="text-light-300 max-w-2xl mx-auto">Our simple three-step process to help you prepare for your next interview</p>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto mb-16">
+          <div className="flex flex-col items-center text-center p-6">
+            <div className="bg-primary-300/20 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+              <span className="text-primary-100 font-bold">1</span>
+            </div>
+            <h3 className="text-xl font-medium mb-2">Choose Your Role</h3>
+            <p className="text-light-300">Select the job role you're preparing for and customize your practice session</p>
+          </div>
+          
+          <div className="flex flex-col items-center text-center p-6">
+            <div className="bg-primary-300/20 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+              <span className="text-primary-100 font-bold">2</span>
+            </div>
+            <h3 className="text-xl font-medium mb-2">Practice with AI</h3>
+            <p className="text-light-300">Complete a realistic interview with our AI interviewer that adapts to your responses</p>
+          </div>
+          
+          <div className="flex flex-col items-center text-center p-6">
+            <div className="bg-primary-300/20 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+              <span className="text-primary-100 font-bold">3</span>
+            </div>
+            <h3 className="text-xl font-medium mb-2">Get Feedback</h3>
+            <p className="text-light-300">Receive detailed feedback and actionable tips to improve your interview skills</p>
+          </div>
+        </div>
+      </section>
+      
+      {/* Feature section - Clerk-inspired */}
+      <section className="py-16">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold mb-4">Everything you need to ace your interviews</h2>
+          <p className="text-light-300 max-w-2xl mx-auto">Comprehensive tools to help you prepare, practice, and perfect your interview skills.</p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

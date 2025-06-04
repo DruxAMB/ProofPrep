@@ -55,7 +55,7 @@ export default async function ProfilePage() {
             <Separator className="bg-dark-300/30" />
             <div>
               <h3 className="text-sm font-medium text-light-300 mb-1">User ID</h3>
-              <p className="text-base font-mono text-sm">{user?.id || "Not available"}</p>
+              <p className="text-base font-mono">{user?.id || "Not available"}</p>
             </div>
           </div>
         </CardContent>
