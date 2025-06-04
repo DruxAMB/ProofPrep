@@ -34,7 +34,7 @@ export async function GET(request: Request) {
     while (true) {
       // Process each account
       for (const account of response.accounts) {
-        console.log('EVM account:', account.address);
+        // console.log('EVM account:', account.address);
         
         // Get USDC balance for this address using viem
         try {

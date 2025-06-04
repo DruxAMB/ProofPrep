@@ -42,3 +42,18 @@ export async function createWallet(userId: string, address: string) {
     throw error;
   }
 }
+
+/**
+ * Get a user's wallet address as a string
+ * @param userId User ID to find wallet address for
+ * @returns Wallet address string or null if not found
+ */
+export async function getUserWalletAddress(userId: string): Promise<string | null> {
+  try {
+    const walletData = await getWalletAddress(userId);
+    return walletData?.address || null;
+  } catch (error) {
+    console.error("Error fetching user wallet address:", error);
+    return null;
+  }
+}
