@@ -5,6 +5,7 @@ import {
 } from "@/lib/actions/general.action";
 import Dashboard from "@/components/dashboard/Dashboard";
 import LandingPage from "@/components/landing/LandingPage";
+import PublicLayout from "@/components/layouts/PublicLayout";
 
 async function Home() {
   // Check authentication status
@@ -17,7 +18,7 @@ async function Home() {
     ? await getLatestInterviews({ userId: user.id })
     : [];
 
-  // Render Dashboard for authenticated users, LandingPage for non-authenticated users
+  // Render Dashboard for authenticated users, LandingPage with Navbar for non-authenticated users
   return isAuthenticated ? (
     <Dashboard 
       user={user} 
@@ -25,7 +26,9 @@ async function Home() {
       allInterviews={allInterviews}
     />
   ) : (
-    <LandingPage />
+    <PublicLayout>
+      <LandingPage />
+    </PublicLayout>
   );
 }
 

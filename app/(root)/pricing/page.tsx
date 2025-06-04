@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import PricingPlans from "@/components/pricing/PricingPlans";
+import PublicLayout from "@/components/layouts/PublicLayout";
 
 export const metadata: Metadata = {
   title: "ProofPrep - Pricing Plans",
@@ -7,10 +8,12 @@ export const metadata: Metadata = {
 
 export default function PricingPage() {
   return (
-    <div className="root-layout">
-      <div className="mt-6">
-        <PricingPlans />
+    <PublicLayout>
+      <div className="root-layout">
+        <div className="mt-6">
+          <PricingPlans />
+        </div>
       </div>
-    </div>
+    </PublicLayout>
   );
 }

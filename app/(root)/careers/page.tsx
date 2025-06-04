@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { X, ArrowRight, Building, Users, Globe, BookOpen, Banknote } from "lucide-react";
+import PublicLayout from "@/components/layouts/PublicLayout";
 
 type JobPosition = {
   id: string;
@@ -106,7 +107,8 @@ export default function CareersPage() {
   };
 
   return (
-    <div className="flex flex-col pb-20">
+    <PublicLayout>
+      <div className="flex flex-col pb-20">
       {/* Hero section */}
       <div className="mb-12">
         <h1 className="text-4xl font-bold mb-6 bg-gradient-to-r from-white to-light-300 bg-clip-text text-transparent">
@@ -269,6 +271,7 @@ export default function CareersPage() {
           </div>
         </DialogContent>
       </Dialog>
-    </div>
+      </div>
+    </PublicLayout>
   );
 }
