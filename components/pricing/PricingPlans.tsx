@@ -16,7 +16,7 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/hooks";
 import { DaimoPlanPayment } from "@/components/payment/DaimoPlanPayment";
-import { getUserWalletAddress } from "@/lib/db/wallet";
+import { fetchWalletAddress } from "@/lib/actions/wallet.action";
 import { Address } from "viem";
 
 type PurchaseStatus = "idle" | "processing" | "success" | "error";
@@ -38,11 +38,11 @@ const PricingPlans = ({ userId }: PricingPlansProps) => {
 
   // Fetch user wallet address when authenticated
   useEffect(() => {
-    const fetchWalletAddress = async () => {
+    const loadUserWalletAddress = async () => {
       if (isAuthenticated && userId) {
         try {
           setIsWalletLoading(true);
-          const address = await getUserWalletAddress(userId);
+          const address = await fetchWalletAddress(userId);
           
           // Check if the address is a properly formatted Ethereum address (0x...)
           if (address && address.startsWith('0x')) {
@@ -69,7 +69,7 @@ const PricingPlans = ({ userId }: PricingPlansProps) => {
       }
     };
     
-    fetchWalletAddress();
+    loadUserWalletAddress();
   }, [isAuthenticated, userId, toast]);
 
   const handlePurchase = async (plan: "standard" | "pro") => {
@@ -228,7 +228,7 @@ const PricingPlans = ({ userId }: PricingPlansProps) => {
                 onClick={() => handlePurchase("standard")}
                 disabled={purchaseStatus === "processing"}
               >
-                Buy Standard Plan
+                Start for free
               </Button>
             )}
           </CardFooter>
@@ -324,7 +324,7 @@ const PricingPlans = ({ userId }: PricingPlansProps) => {
                 disabled={purchaseStatus === "processing"}
               >
                 <span className="relative z-10 flex items-center justify-center">
-                  Buy Pro Plan
+                  Start for free
                 </span>
                 <span className="absolute inset-0 bg-white/10 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300"></span>
               </Button>

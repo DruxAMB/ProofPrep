@@ -28,6 +28,17 @@ const nextConfig: NextConfig = {
       test: /\.svg$/,
       use: ["@svgr/webpack"],
     });
+    
+    // Add fallback for Node.js modules that are not available in the browser
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      fs: false,
+      net: false,
+      tls: false,
+      child_process: false,
+      http2: false,
+    };
+    
     return config;
   },
   // experimental: {
