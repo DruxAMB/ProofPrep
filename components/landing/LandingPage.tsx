@@ -12,6 +12,8 @@ const LandingPage = () => {
   const router = useRouter();
   const [videoOpen, setVideoOpen] = useState(false);
   const [videoLoading, setVideoLoading] = useState(true);
+  const [isGetStartedLoading, setIsGetStartedLoading] = useState(false);
+  const [isGoogleSignInLoading, setIsGoogleSignInLoading] = useState(false);
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -36,11 +38,27 @@ const LandingPage = () => {
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4 pt-4">
             <Button 
-              onClick={() => router.push("/sign-up")} 
+              onClick={() => {
+                setIsGetStartedLoading(true);
+                router.push("/sign-up");
+              }} 
               className="btn-primary group relative overflow-hidden px-8 py-6 text-lg transition-all duration-300 ease-in-out w-full sm:w-fit"
+              disabled={isGetStartedLoading}
             >
               <span className="relative z-10 flex items-center gap-1.5 transition-transform duration-300 group-hover:translate-x-1">
-                Get Started <ArrowRight className="h-4 w-4" />
+                {isGetStartedLoading ? (
+                  <>
+                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    redirecting...
+                  </>
+                ) : (
+                  <>
+                    Get Started <ArrowRight className="h-4 w-4" />
+                  </>
+                )}
               </span>
             </Button>
             <Button 
@@ -221,11 +239,27 @@ const LandingPage = () => {
             Join thousands of professionals who are using ProofPrep to prepare for their interviews and advance their careers.
           </p>
           <Button 
-            onClick={() => router.push("/sign-in")} 
+            onClick={() => {
+              setIsGoogleSignInLoading(true);
+              router.push("/sign-in");
+            }} 
             className="btn-primary group relative overflow-hidden px-10 py-6 text-lg transition-all duration-300 ease-in-out"
+            disabled={isGoogleSignInLoading}
           >
             <span className="relative z-10 flex items-center gap-2 transition-transform duration-300 group-hover:translate-x-1">
-              Sign in with Google <ArrowRight className="h-5 w-5" />
+              {isGoogleSignInLoading ? (
+                <>
+                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  redirecting...
+                </>
+              ) : (
+                <>
+                  Sign in with Google <ArrowRight className="h-5 w-5" />
+                </>
+              )}
             </span>
           </Button>
           
