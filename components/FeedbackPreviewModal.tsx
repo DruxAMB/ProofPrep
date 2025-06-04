@@ -49,7 +49,7 @@ export default function FeedbackPreviewModal({
         URL.revokeObjectURL(blobUrl);
       }
     };
-  }, [imageUrl]);
+  }, [imageUrl, blobUrl]);
 
   // Generate URLs for social sharing
   // For Twitter, we can't directly attach the image via URL params, but we include the message

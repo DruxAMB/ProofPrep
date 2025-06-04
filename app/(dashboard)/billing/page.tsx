@@ -1,4 +1,3 @@
-import { getCurrentUser } from "@/lib/actions/auth.action";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
@@ -6,7 +5,6 @@ import { CreditCard, Package, History } from "lucide-react";
 import LoadingLink from "@/components/ui/loading-link";
 
 export default async function BillingPage() {
-  const user = await getCurrentUser();
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -86,7 +84,7 @@ export default async function BillingPage() {
             </div>
             <h3 className="text-lg font-medium mb-2">No Payment Methods</h3>
             <p className="text-light-300 text-sm mb-6 max-w-md mx-auto">
-              You don't have any payment methods set up yet. Add a payment method to upgrade to a premium plan.
+              You don&apos;t have any payment methods set up yet. Add a payment method to upgrade to a premium plan.
             </p>
             <Button variant="outline" className="border-primary-200/30 hover:bg-primary-200/10">
               Add Payment Method

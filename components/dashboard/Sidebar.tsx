@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { signOut } from "@/lib/actions/auth.action";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 interface SidebarProps {
   user: {
@@ -29,7 +30,7 @@ export default function Sidebar({ user }: SidebarProps) {
   useEffect(() => {
     const checkIfMobile = () => {
       setIsMobile(window.innerWidth < 768);
-    }; isMobile
+    }; 
     
     // Initial check
     checkIfMobile();
@@ -39,7 +40,7 @@ export default function Sidebar({ user }: SidebarProps) {
     
     // Cleanup
     return () => window.removeEventListener('resize', checkIfMobile);
-  }, []);
+  }, [isMobile]);
   
   // Close mobile menu when navigating
   useEffect(() => {
@@ -147,10 +148,12 @@ export default function Sidebar({ user }: SidebarProps) {
         <div className="flex items-center space-x-3">
           <div className="size-10 rounded-full bg-gradient-to-br from-primary-200/20 to-primary-100/40 flex items-center justify-center">
             {user?.profileImage ? (
-              <img
+              <Image
                 src={user.profileImage}
                 alt={user?.name || "User"}
-                className="h-10 w-10 rounded-full"
+                height={40}
+                width={40}
+                className="rounded-full"
               />
             ) : (
               <User className="h-5 w-5 text-primary-100" />

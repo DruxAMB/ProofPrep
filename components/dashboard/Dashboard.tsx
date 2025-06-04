@@ -1,7 +1,6 @@
 import Image from "next/image";
 import LoadingLink from "@/components/ui/loading-link";
 import InterviewCard from "@/components/InterviewCard";
-import CreditsDisplay from "@/components/credits/CreditsDisplay";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import Sidebar from "@/components/dashboard/Sidebar";
 

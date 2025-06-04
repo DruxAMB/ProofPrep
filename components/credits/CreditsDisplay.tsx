@@ -92,7 +92,7 @@ const CreditsDisplay = ({ userId }: CreditsDisplayProps) => {
             </DialogHeader>
             <div className="py-4">
               <p className="text-center mb-6">
-                You'll be redirected to our secure payment page to complete your purchase.
+                You&apos;ll be redirected to our secure payment page to complete your purchase.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <Button 
@@ -252,7 +252,7 @@ const CreditsDisplay = ({ userId }: CreditsDisplayProps) => {
             </div>
           ) : (
             <div className="space-y-5">
-              {activities.map((activity, index) => (
+              {activities.map((activity) => (
               <div 
                 key={activity.id}
                 className="flex items-start justify-between pb-4 border-b border-dark-300 last:border-0 last:pb-0"

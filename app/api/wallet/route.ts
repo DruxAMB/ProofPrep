@@ -24,6 +24,7 @@ export async function GET(request: NextRequest) {
     try {
       await auth.getUser(userId);
     } catch (error) {
+      console.error(`User ${userId} not found in Firebase`, error);
       return NextResponse.json(
         { error: "Invalid user ID" },
         { status: 401 }
@@ -31,11 +32,11 @@ export async function GET(request: NextRequest) {
     }
 
     // Get wallet account from CDP
-    console.log(`Attempting to get wallet for user ID: ${userId}`);
+    // console.log(`Attempting to get wallet for user ID: ${userId}`);
     
     // Check if user has a wallet address in the database
     const walletRecord = await getWalletAddress(userId);
-    console.log('Wallet record from database:', walletRecord);
+    // console.log('Wallet record from database:', walletRecord);
     
     let account;
     

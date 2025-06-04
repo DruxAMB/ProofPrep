@@ -2,6 +2,7 @@ import { getCurrentUser } from "@/lib/actions/auth.action";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { User } from "lucide-react";
+import Image from "next/image";
 
 export default async function ProfilePage() {
   const user = await getCurrentUser();
@@ -24,10 +25,12 @@ export default async function ProfilePage() {
           <div className="flex items-center space-x-4 mb-6">
             <div className="size-16 rounded-full bg-gradient-to-br from-primary-200/20 to-primary-100/40 flex items-center justify-center">
               {user?.profileImage ? (
-                <img
+                <Image
                   src={user.profileImage}
                   alt={user?.name || "User"}
-                  className="h-16 w-16 rounded-full"
+                  height={64}
+                  width={64}
+                  className="rounded-full"
                 />
               ) : (
                 <User className="h-8 w-8 text-primary-100" />
