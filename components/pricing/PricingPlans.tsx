@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Check, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,11 +13,9 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { purchaseCreditPlan } from "@/lib/actions/credit.action";
 import { useToast } from "@/components/ui/use-toast";
-import { useAuth } from "@/hooks";
-import { DaimoPlanPayment } from "@/components/payment/DaimoPlanPayment";
-import { fetchWalletAddress } from "@/lib/actions/wallet.action";
-import { Address } from "viem";
+
 
 type PurchaseStatus = "idle" | "processing" | "success" | "error";
 
@@ -27,105 +25,55 @@ interface PricingPlansProps {
 
 const PricingPlans = ({ userId }: PricingPlansProps) => {
   const router = useRouter();
-  const { isAuthenticated, loading: authLoading } = useAuth();
   const { toast } = useToast();
   const [purchaseStatus, setPurchaseStatus] = useState<PurchaseStatus>("idle");
   const [selectedPlan, setSelectedPlan] = useState<"standard" | "pro" | null>(
     null
   );
-  const [walletAddress, setWalletAddress] = useState<Address | null>(null);
-  const [isWalletLoading, setIsWalletLoading] = useState(false);
 
-  // Fetch user wallet address when authenticated
-  useEffect(() => {
-    const loadUserWalletAddress = async () => {
-      if (isAuthenticated && userId) {
-        try {
-          setIsWalletLoading(true);
-          const address = await fetchWalletAddress(userId);
-          
-          // Check if the address is a properly formatted Ethereum address (0x...)
-          if (address && address.startsWith('0x')) {
-            setWalletAddress(address as Address);
-          } else {
-            // Invalid address format
-            setWalletAddress(null);
-            toast({
-              title: "Invalid Wallet",
-              description: "Your wallet address is not in the correct format",
-              variant: "destructive",
-            });
-          }
-        } catch (error) {
-          console.error("Error fetching wallet address:", error);
-          toast({
-            title: "Error",
-            description: "Failed to load your wallet address",
-            variant: "destructive",
-          });
-        } finally {
-          setIsWalletLoading(false);
-        }
-      }
-    };
-    
-    loadUserWalletAddress();
-  }, [isAuthenticated, userId, toast]);
-
+  console.log(userId);
   const handlePurchase = async (plan: "standard" | "pro") => {
     try {
       setSelectedPlan(plan);
       setPurchaseStatus("processing");
 
       // Redirect to sign-in if user is not authenticated
-      if (!isAuthenticated) {
+      if (!userId) {
         router.push(`/sign-in?redirect=/pricing`);
         return;
       }
-      
-      // If wallet address is not found, show error
-      if (!walletAddress && !isWalletLoading) {
-        setPurchaseStatus("error");
+
+      // In a real implementation, this would redirect to a payment processor
+      // For now, we'll just simulate a successful purchase after a short delay
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      // Call the server action to purchase the plan
+      const planId = plan === "standard" ? "standard-plan" : "pro-plan";
+      const result = await purchaseCreditPlan(userId!, planId);
+
+      if (result) {
+        setPurchaseStatus("success");
         toast({
-          title: "Wallet Not Found",
-          description: "You need a wallet address to purchase a plan. Please contact support.",
-          variant: "destructive",
+          title: "Purchase Successful",
+          description: `You have successfully purchased the ${plan} plan.`,
+          variant: "default",
         });
-        return;
+      } else {
+        throw new Error("Failed to purchase plan");
       }
-      
-      // Payment will be handled by DaimoPayButton
-      // Just change status to processing and let the button component handle it
     } catch (error) {
-      console.error("Error preparing purchase:", error);
+      console.error("Error purchasing plan:", error);
       setPurchaseStatus("error");
       toast({
-        title: "Purchase Preparation Failed",
+        title: "Purchase Failed",
         description:
-          "There was an error setting up your purchase. Please try again.",
+          "There was an error processing your purchase. Please try again.",
         variant: "destructive",
       });
     }
   };
-  
-  // Handle successful payment completion
-  const handlePaymentSuccess = () => {
-    setPurchaseStatus("success");
-  };
-  
-  // Handle payment error
-  const handlePaymentError = () => {
-    setPurchaseStatus("error");
-  };
 
-  // Show loading state while checking auth
-  if (authLoading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
+  // No need to show loading state since userId is passed from server
 
   return (
     <div className="flex flex-col items-center py-20 px-4 relative overflow-hidden">
@@ -177,13 +125,10 @@ const PricingPlans = ({ userId }: PricingPlansProps) => {
               <PricingItem>Chat Support</PricingItem>
             </ul>
           </CardContent>
-          <CardFooter className="pt-4 pb-8">
-            {purchaseStatus === "processing" && selectedPlan === "standard" && isWalletLoading ? (
-              <Button
-                className="w-full bg-primary-100 hover:bg-primary-200"
-                disabled
-              >
-                Loading wallet...
+          <CardFooter>
+            {purchaseStatus === "processing" && selectedPlan === "standard" ? (
+              <Button className="w-full" disabled>
+                Processing...
               </Button>
             ) : purchaseStatus === "success" && selectedPlan === "standard" ? (
               <Button
@@ -199,36 +144,32 @@ const PricingPlans = ({ userId }: PricingPlansProps) => {
               >
                 Try Again
               </Button>
-            ) : purchaseStatus === "processing" && selectedPlan === "standard" ? (
-              // Use DaimoPlanPayment component for the standard plan
-              <div className="w-full py-2">
-                {walletAddress ? (
-                  <DaimoPlanPayment
-                    userId={userId || ''}
-                    planId="standard-plan"
-                    planName="Standard"
-                    amount="10.00" // $10 USDC for Standard Plan
-                    walletAddress={walletAddress}
-                    onSuccess={handlePaymentSuccess}
-                    onError={handlePaymentError}
-                    isLoading={isWalletLoading}
-                  />
-                ) : (
-                  <Button
-                    className="w-full bg-yellow-600 hover:bg-yellow-700"
-                    disabled
-                  >
-                    Wallet address not available
-                  </Button>
-                )}
-              </div>
             ) : (
               <Button
-                className="w-full bg-primary-100 hover:bg-primary-200 text-black font-medium mt-2 py-6"
+                className="w-full bg-primary-200 hover:bg-primary-200/90 text-dark-100 font-medium mt-2 py-6 relative overflow-hidden group/btn cursor-pointer"
                 onClick={() => handlePurchase("standard")}
                 disabled={purchaseStatus === "processing"}
               >
-                Start for free
+                <span className="relative z-10 flex items-center justify-center">
+                  {purchaseStatus === "processing" &&
+                  selectedPlan === "standard" ? (
+                    <>
+                      <span
+                        className="animate-spin mr-2 inline-block size-4 border-2 border-current border-t-transparent rounded-full"
+                        aria-hidden="true"
+                      ></span>
+                      Processing...
+                    </>
+                  ) : (
+                    <>
+                      Start For Free
+                      <span className="ml-2 group-hover/btn:translate-x-1 transition-transform duration-200">
+                        &rarr;
+                      </span>
+                    </>
+                  )}
+                </span>
+                <span className="absolute inset-0 bg-primary-200/20 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300"></span>
               </Button>
             )}
           </CardFooter>
@@ -272,13 +213,10 @@ const PricingPlans = ({ userId }: PricingPlansProps) => {
               <PricingItem>Chat Support</PricingItem>
             </ul>
           </CardContent>
-          <CardFooter className="pt-4 pb-8">
-            {purchaseStatus === "processing" && selectedPlan === "pro" && isWalletLoading ? (
-              <Button
-                className="w-full bg-primary-100 hover:bg-primary-200"
-                disabled
-              >
-                Loading wallet...
+          <CardFooter>
+            {purchaseStatus === "processing" && selectedPlan === "pro" ? (
+              <Button className="w-full" disabled>
+                Processing...
               </Button>
             ) : purchaseStatus === "success" && selectedPlan === "pro" ? (
               <Button
@@ -294,29 +232,6 @@ const PricingPlans = ({ userId }: PricingPlansProps) => {
               >
                 Try Again
               </Button>
-            ) : purchaseStatus === "processing" && selectedPlan === "pro" ? (
-              // Use DaimoPlanPayment component for the pro plan
-              <div className="w-full py-2">
-                {walletAddress ? (
-                  <DaimoPlanPayment
-                    userId={userId || ''}
-                    planId="pro-plan"
-                    planName="Pro"
-                    amount="49.00" // $49 USDC for Pro Plan
-                    walletAddress={walletAddress}
-                    onSuccess={handlePaymentSuccess}
-                    onError={handlePaymentError}
-                    isLoading={isWalletLoading}
-                  />
-                ) : (
-                  <Button
-                    className="w-full bg-yellow-600 hover:bg-yellow-700"
-                    disabled
-                  >
-                    Wallet address not available
-                  </Button>
-                )}
-              </div>
             ) : (
               <Button
                 className="w-full bg-primary-200 from-primary to-primary/80 hover:bg-primary-200/90 hover:to-primary/70 font-medium mt-2 py-6 relative overflow-hidden group/btn cursor-pointer"
@@ -324,7 +239,22 @@ const PricingPlans = ({ userId }: PricingPlansProps) => {
                 disabled={purchaseStatus === "processing"}
               >
                 <span className="relative z-10 flex items-center justify-center">
-                  Start for free
+                  {purchaseStatus === "processing" && selectedPlan === "pro" ? (
+                    <>
+                      <span
+                        className="animate-spin mr-2 inline-block size-4 border-2 border-current border-t-transparent rounded-full"
+                        aria-hidden="true"
+                      ></span>
+                      Processing...
+                    </>
+                  ) : (
+                    <>
+                      Start For Free
+                      <span className="ml-2 group-hover/btn:translate-x-1 transition-transform duration-200">
+                        &rarr;
+                      </span>
+                    </>
+                  )}
                 </span>
                 <span className="absolute inset-0 bg-white/10 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300"></span>
               </Button>
