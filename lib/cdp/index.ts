@@ -12,7 +12,7 @@ try {
 }
 
 // Initialize CDP client with environment variables
-const cdpClient: CdpClient = new CdpClient({
+export const cdpClient: CdpClient = new CdpClient({
   apiKeyId: CDP_CONFIG.apiKeyId,
   apiKeySecret: CDP_CONFIG.apiKeySecret,
   walletSecret: CDP_CONFIG.walletSecret,
@@ -85,6 +85,52 @@ export async function getEvmAccountFromId(userId: string): Promise<EvmServerAcco
     return await cdpClient.evm.getAccount({ address: walletRecord.address as Address });
   } catch (error) {
     console.error("Error in getEvmAccountFromId:", error);
+    throw error;
+  }
+}
+
+/**
+ * List all EVM accounts created with our CDP secret key
+ * @param pageToken Optional page token for pagination
+ * @returns Object containing account list and optional next page token
+ */
+export async function listEvmAccounts(pageToken?: string) {
+  try {
+    console.log('CDP: Listing all EVM accounts');
+    const response = await cdpClient.evm.listAccounts(pageToken ? { pageToken } : undefined);
+    console.log(`CDP: Successfully retrieved ${response.accounts.length} accounts${pageToken ? ' with page token' : ''}`);
+    
+    return {
+      accounts: response.accounts,
+      nextPageToken: response.nextPageToken,
+      hasNextPage: !!response.nextPageToken,
+    };
+  } catch (error) {
+    console.error("Error listing EVM accounts:", error);
+    throw error;
+  }
+}
+
+/**
+ * List all EVM accounts with automatic pagination handling
+ * @returns Promise resolving to all EVM accounts
+ */
+export async function listAllEvmAccounts() {
+  try {
+    console.log('CDP: Listing all EVM accounts with pagination');
+    let allAccounts: EvmServerAccount[] = [];
+    let nextPageToken: string | undefined;
+    
+    do {
+      const response = await cdpClient.evm.listAccounts(nextPageToken ? { pageToken: nextPageToken } : undefined);
+      allAccounts = [...allAccounts, ...response.accounts];
+      nextPageToken = response.nextPageToken;
+    } while (nextPageToken);
+    
+    console.log(`CDP: Successfully retrieved all ${allAccounts.length} accounts`);
+    return allAccounts;
+  } catch (error) {
+    console.error("Error listing all EVM accounts:", error);
     throw error;
   }
 }
