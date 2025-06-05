@@ -1,5 +1,7 @@
-import { db } from "@/firebase/client";
-import { collection, doc, getDoc, getDocs, setDoc, updateDoc, query, where, orderBy, limit, Timestamp, addDoc } from "firebase/firestore";
+"use server"
+
+import { db } from "@/firebase/admin";
+import { Timestamp } from "firebase-admin/firestore";
 import { v4 as uuidv4 } from "uuid";
 import { CreditActivity, CreditPlan, UserCredit, PlanType } from "@/types/credit";
 import { defaultCreditPlans } from "@/lib/db/schemas/credit.schema";
@@ -14,8 +16,8 @@ const CREDIT_PLANS_COLLECTION = "creditPlans";
  */
 export async function getCreditPlans(): Promise<CreditPlan[]> {
   try {
-    const plansRef = collection(db, CREDIT_PLANS_COLLECTION);
-    const plansSnapshot = await getDocs(plansRef);
+    const plansRef = db.collection(CREDIT_PLANS_COLLECTION);
+    const plansSnapshot = await plansRef.get();
     
     // If no plans exist in Firestore, return default plans
     if (plansSnapshot.empty) {
@@ -38,10 +40,10 @@ export async function getCreditPlans(): Promise<CreditPlan[]> {
  */
 export async function getCreditPlan(planId: string): Promise<CreditPlan | null> {
   try {
-    const planRef = doc(db, CREDIT_PLANS_COLLECTION, planId);
-    const planSnapshot = await getDoc(planRef);
+    const planRef = db.collection(CREDIT_PLANS_COLLECTION).doc(planId);
+    const planSnapshot = await planRef.get();
     
-    if (!planSnapshot.exists()) {
+    if (!planSnapshot.exists) {
       // Return default plan if not found in Firestore
       const defaultPlan = defaultCreditPlans.find(plan => plan.id === planId);
       return defaultPlan || null;
@@ -62,19 +64,19 @@ export async function getCreditPlan(planId: string): Promise<CreditPlan | null> 
  */
 export async function getUserCredits(userId: string): Promise<UserCredit | null> {
   try {
-    const creditsRef = collection(db, USERS_CREDITS_COLLECTION);
-    const q = query(creditsRef, where("userId", "==", userId));
-    const creditsSnapshot = await getDocs(q);
+    const creditsRef = db.collection(USERS_CREDITS_COLLECTION);
+    const snapshot = await creditsRef.where("userId", "==", userId).get();
     
-    if (creditsSnapshot.empty) {
+    if (snapshot.empty) {
       return null;
     }
     
-    const creditDoc = creditsSnapshot.docs[0];
+    // Return the first matching document
+    const doc = snapshot.docs[0];
     return {
-      ...creditDoc.data(),
-      id: creditDoc.id,
-      purchaseDate: creditDoc.data().purchaseDate.toDate()
+      ...doc.data(),
+      id: doc.id,
+      purchaseDate: doc.data().purchaseDate.toDate()
     } as UserCredit;
   } catch (error) {
     console.error("Error getting user credits:", error);
@@ -87,15 +89,12 @@ export async function getUserCredits(userId: string): Promise<UserCredit | null>
  */
 export async function getUserCreditActivity(userId: string, resultLimit = 10): Promise<CreditActivity[]> {
   try {
-    const activitiesRef = collection(db, CREDIT_ACTIVITIES_COLLECTION);
-    const q = query(
-      activitiesRef, 
-      where("userId", "==", userId),
-      orderBy("timestamp", "desc"),
-      limit(resultLimit)
-    );
-    
-    const activitiesSnapshot = await getDocs(q);
+    const activitiesRef = db.collection(CREDIT_ACTIVITIES_COLLECTION);
+    const activitiesSnapshot = await activitiesRef
+      .where("userId", "==", userId)
+      .orderBy("timestamp", "desc")
+      .limit(resultLimit)
+      .get();
     
     return activitiesSnapshot.docs.map(doc => ({
       ...doc.data(),
@@ -147,8 +146,8 @@ export async function purchaseCreditPlan(userId: string, planId: string): Promis
     };
     
     // Save to Firestore
-    const creditRef = doc(db, USERS_CREDITS_COLLECTION, creditsId);
-    await setDoc(creditRef, {
+    const creditRef = db.collection(USERS_CREDITS_COLLECTION).doc(creditsId);
+    await creditRef.set({
       ...userCreditData,
       purchaseDate: Timestamp.fromDate(userCreditData.purchaseDate),
       expirationDate: Timestamp.fromDate(userCreditData.expirationDate)
@@ -192,8 +191,8 @@ export async function consumeCredits(
     }
     
     // Update credits
-    const creditsRef = doc(db, USERS_CREDITS_COLLECTION, userCredits.id);
-    await updateDoc(creditsRef, {
+    const creditsRef = db.collection(USERS_CREDITS_COLLECTION).doc(userCredits.id);
+    await creditsRef.update({
       remainingCredits: userCredits.remainingCredits - creditsToConsume,
       minutesUsed: userCredits.minutesUsed + minutesUsed
     });
@@ -222,8 +221,8 @@ export async function consumeCredits(
  */
 async function addCreditActivity(activity: Omit<CreditActivity, "id">): Promise<string | null> {
   try {
-    const activitiesRef = collection(db, CREDIT_ACTIVITIES_COLLECTION);
-    const docRef = await addDoc(activitiesRef, {
+    const activitiesRef = db.collection(CREDIT_ACTIVITIES_COLLECTION);
+    const docRef = await activitiesRef.add({
       ...activity,
       timestamp: Timestamp.fromDate(activity.timestamp)
     });
@@ -286,8 +285,8 @@ export async function consumeFreeSession(userId: string): Promise<boolean> {
     if (!userCredits || userCredits.freeSessionsRemaining <= 0) return false;
     
     // Update the document
-    const creditsRef = doc(db, USERS_CREDITS_COLLECTION, userCredits.id);
-    await updateDoc(creditsRef, {
+    const creditsRef = db.collection(USERS_CREDITS_COLLECTION).doc(userCredits.id);
+    await creditsRef.update({
       freeSessionsRemaining: userCredits.freeSessionsRemaining - 1
     });
     
