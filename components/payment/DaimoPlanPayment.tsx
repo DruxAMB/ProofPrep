@@ -1,6 +1,3 @@
-"use client";
-
-import { useState, useEffect } from "react";
 import { DaimoPayButton } from "@daimo/pay";
 import { useToast } from "@/components/ui/use-toast";
 import { purchaseCreditPlan } from "@/lib/actions/credit.action";
@@ -95,25 +92,38 @@ export function DaimoPlanPayment({
     );
   }
 
+  // Create custom styled button that wraps the DaimoPayButton
   return (
-    <DaimoPayButton
-      appId="pay-demo" // Replace with your actual Daimo app ID in production
-      intent={`Purchase ${planName} Plan`}
-      toAddress={walletAddress}
-      toChain={8453} // Base mainnet
-      toUnits={amount} // Amount in USDC
-      toToken={USDC_ADDRESS}
-      closeOnSuccess
-      mode="dark"
-      theme="rounded"
-      externalId={`${userId}-${planId}-${Date.now()}`}
-      metadata={{
-        userId: userId,
-        planId: planId,
-        planName: planName
-      }}
-      onPaymentCompleted={handlePaymentCompleted}
-      onPaymentBounced={handlePaymentBounced}
-    />
+    <div className="relative w-full">
+      {/* Custom styled button to match app styling */}
+      <button 
+        className="w-full bg-primary-200 hover:bg-primary-200/90 text-dark-100 font-medium py-2.5 px-4 rounded"
+      >
+        Purchase {planName} Plan
+      </button>
+      
+      {/* Position the DaimoPayButton over our custom button but make it transparent */}
+      <div className="absolute inset-0 opacity-0 w-full h-full">
+        <DaimoPayButton
+          appId="pay-demo" // Replace with your actual Daimo app ID in production
+          intent={`Purchase ${planName} Plan`}
+          toAddress={walletAddress}
+          toChain={8453} // Base mainnet
+          toUnits={amount} // Amount in USDC
+          toToken={USDC_ADDRESS}
+          closeOnSuccess
+          mode="dark"
+          theme="rounded"
+          externalId={`${userId}-${planId}-${Date.now()}`}
+          metadata={{
+            userId: userId,
+            planId: planId,
+            planName: planName
+          }}
+          onPaymentCompleted={handlePaymentCompleted}
+          onPaymentBounced={handlePaymentBounced}
+        />
+      </div>
+    </div>
   );
 }
