@@ -10,50 +10,31 @@ const USDC_ADDRESS = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
 interface PlanPaymentProps {
   userId: string;
   walletAddress: Address;
+  planId: string;
+  planName: string;
+  amount: string;
   onSuccess?: () => void;
   onError?: () => void;
   isLoading?: boolean;
 }
 
 /**
- * DaimoPlanPayment component acts as a container for specific plan payment components
+ * DaimoPlanPayment component handles plan payments using Daimo Pay SDK
+ * Simplified to use a single component for all plan types
  */
-export function DaimoPlanPayment(props: PlanPaymentProps & {
-  planId: string;
-  planName: string;
-  amount: string;
-}) {
-  // Determine which component to render based on planId
-  if (props.planId === "standard-plan") {
-    return <StandardPlanPayment {...props} />;
-  } else if (props.planId === "pro-plan") {
-    return <ProPlanPayment {...props} />;
-  }
-  
-  // Fallback for unknown plan types
-  return (
-    <button 
-      className="w-full bg-yellow-600 hover:bg-yellow-700 text-white font-medium py-2.5 px-4 rounded"
-      disabled
-    >
-      Unknown plan type
-    </button>
-  );
-}
-
-/**
- * StandardPlanPayment component handles Standard plan payments
- */
-function StandardPlanPayment({
+export function DaimoPlanPayment({
   userId,
   walletAddress,
+  planId,
+  planName,
+  amount,
   onSuccess,
   onError,
   isLoading = false,
 }: PlanPaymentProps) {
   const { toast } = useToast();
   const [processing, setProcessing] = useState(false);
-  
+
   // Handle successful payment
   const handlePaymentCompleted = async (event: any) => {
     if (processing) return; // Prevent duplicate processing
@@ -61,12 +42,12 @@ function StandardPlanPayment({
     setProcessing(true);
     try {
       // Process the plan purchase in your system
-      const result = await purchaseCreditPlan(userId, "standard-plan");
+      const result = await purchaseCreditPlan(userId, planId);
       
       if (result) {
         toast({
           title: "Payment Successful",
-          description: "You have successfully purchased the Standard plan.",
+          description: `You have successfully purchased the ${planName} plan.`,
           variant: "default",
         });
         
@@ -75,7 +56,7 @@ function StandardPlanPayment({
         throw new Error("Failed to process plan purchase");
       }
     } catch (error) {
-      console.error("Error processing Standard plan purchase:", error);
+      console.error(`Error processing ${planName} plan purchase:`, error);
       toast({
         title: "Purchase Processing Failed",
         description:
@@ -93,7 +74,7 @@ function StandardPlanPayment({
   const handlePaymentBounced = () => {
     toast({
       title: "Payment Failed",
-      description: "Your Standard plan payment could not be processed. Please try again.",
+      description: `Your ${planName} plan payment could not be processed. Please try again.`,
       variant: "destructive",
     });
     
@@ -118,142 +99,74 @@ function StandardPlanPayment({
       </button>
     );
   }
-
-  return (
-    <DaimoPayButton
-      appId="pay-demo"
-      intent="Purchase Standard Plan" // Fixed text for Standard plan
-      toAddress={walletAddress}
-      toChain={8453} // Base mainnet
-      toUnits="1" // Amount for Standard plan (was 9, changed to 1 for testing)
-      toToken={USDC_ADDRESS}
-      closeOnSuccess
-      mode="dark"
-      theme="rounded"
-      externalId={`${userId}-standard-plan-${Date.now()}`}
-      metadata={{
-        userId: userId,
-        planId: "standard-plan",
-        planName: "Standard"
-      }}
-      onPaymentCompleted={handlePaymentCompleted}
-      onPaymentBounced={handlePaymentBounced}
-      customTheme={{
-        "--ck-accent-color": "#65bdcc",
-        "--ck-accent-text-color": "#020808",
-        "--ck-font-family": "'Outfit', sans-serif",
-        "--ck-connectbutton-background": "#65bdcc",
-        "--ck-connectbutton-hover-background": "#4a9caa",
-        "--ck-body-background": "#272f33",
-      }}
-    />
-  );
-}
-
-/**
- * ProPlanPayment component handles Pro plan payments
- */
-function ProPlanPayment({
-  userId,
-  walletAddress,
-  onSuccess,
-  onError,
-  isLoading = false,
-}: PlanPaymentProps) {
-  const { toast } = useToast();
-  const [processing, setProcessing] = useState(false);
   
-  // Handle successful payment
-  const handlePaymentCompleted = async (event: any) => {
-    if (processing) return; // Prevent duplicate processing
-    
-    setProcessing(true);
-    try {
-      // Process the plan purchase in your system
-      const result = await purchaseCreditPlan(userId, "pro-plan");
-      
-      if (result) {
-        toast({
-          title: "Payment Successful",
-          description: "You have successfully purchased the Pro plan.",
-          variant: "default",
-        });
-        
-        if (onSuccess) onSuccess();
-      } else {
-        throw new Error("Failed to process plan purchase");
-      }
-    } catch (error) {
-      console.error("Error processing Pro plan purchase:", error);
-      toast({
-        title: "Purchase Processing Failed",
-        description:
-          "Your payment was received but we couldn't process your plan. Our team will assist you shortly.",
-        variant: "destructive",
-      });
-      
-      if (onError) onError();
-    } finally {
-      setProcessing(false);
-    }
-  };
-
-  // Handle payment failure
-  const handlePaymentBounced = () => {
-    toast({
-      title: "Payment Failed",
-      description: "Your Pro plan payment could not be processed. Please try again.",
-      variant: "destructive",
-    });
-    
-    if (onError) onError();
-  };
-
-  if (isLoading || processing) {
-    return (
-      <div className="flex justify-center items-center py-4">
-        <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
-
-  if (!walletAddress) {
+  // Validate planId
+  if (planId !== "standard-plan" && planId !== "pro-plan") {
     return (
       <button 
-        className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2.5 px-4 rounded"
+        className="w-full bg-yellow-600 hover:bg-yellow-700 text-white font-medium py-2.5 px-4 rounded"
         disabled
       >
-        Wallet address not found
+        Unknown plan type
       </button>
     );
   }
 
+  // Return the appropriate Daimo Pay button with dynamic text based on the plan props
   return (
     <DaimoPayButton
       appId="pay-demo"
-      intent="Purchase Pro Plan" // Fixed text for Pro plan
+      intent={`Purchase ${planName} Plan`}
       toAddress={walletAddress}
       toChain={8453} // Base mainnet
-      toUnits="49" // Amount for Pro plan
+      toUnits={amount} // Dynamic amount based on the plan
       toToken={USDC_ADDRESS}
       closeOnSuccess
       mode="dark"
       theme="rounded"
-      externalId={`${userId}-pro-plan-${Date.now()}`}
+      externalId={`${userId}-${planId}-${Date.now()}`}
       metadata={{
         userId: userId,
-        planId: "pro-plan",
-        planName: "Pro"
+        planId: planId,
+        planName: planName
       }}
       onPaymentCompleted={handlePaymentCompleted}
       onPaymentBounced={handlePaymentBounced}
       customTheme={{
-        "--ck-accent-color": "#65bdcc",
-        "--ck-accent-text-color": "#020808",
-        "--ck-font-family": "'Outfit', sans-serif",
-        "--ck-connectbutton-background": "#65bdcc",
-        "--ck-connectbutton-hover-background": "#4a9caa",
-        "--ck-body-background": "#272f33",
+        // Global theme
+        "--ck-accent-color": "#65bdcc", // primary-200 from globals.css
+        "--ck-accent-text-color": "#020808", // dark-100 from globals.css
+        "--ck-font-family": "'Outfit', sans-serif", // Outfit font from layout
+        "--ck-body-color": "#d9f2f6", // light-100 from globals.css
+        "--ck-border-radius": "0.625rem", // --radius from globals.css
+        
+        // Connect button styling
+        "--ck-connectbutton-font-size": "1rem",
+        "--ck-connectbutton-border-radius": "0.625rem",
+        "--ck-connectbutton-color": "#020808", // dark-100 - text color
+        "--ck-connectbutton-background": "#65bdcc", // primary-200 from globals.css
+        "--ck-connectbutton-box-shadow": "none",
+        
+        // Hover state
+        "--ck-connectbutton-hover-color": "#020808", // dark-100
+        "--ck-connectbutton-hover-background": "#4a9caa", // light-600 from globals.css
+        "--ck-connectbutton-hover-box-shadow": "0 2px 8px rgba(0, 0, 0, 0.2)",
+        
+        // Active state (when pressed)
+        "--ck-connectbutton-active-color": "#020808",
+        "--ck-connectbutton-active-background": "#2a5c66", // light-800 from globals.css
+        "--ck-connectbutton-active-box-shadow": "inset 0 1px 2px rgba(0, 0, 0, 0.1)",
+        
+        // Modal styling
+        "--ck-overlay-background": "rgba(0, 0, 0, 0.7)", // Dark overlay with transparency
+        "--ck-overlay-backdrop-filter": "blur(5px)", // Subtle blur effect
+        "--ck-modal-box-shadow": "0 10px 25px rgba(0, 0, 0, 0.3)", // Subtle shadow for depth
+        "--ck-body-background": "#272f33", // dark-200 from globals.css
+        "--ck-body-background-transparent": "rgba(39, 47, 51, 0.95)", // dark-200 with transparency
+        "--ck-body-background-secondary": "#243339", // dark-300 from globals.css
+        "--ck-body-background-secondary-hover-background": "#2a5c66", // light-800 from globals.css
+        "--ck-body-background-secondary-hover-outline": "#4a9caa", // light-600 from globals.css
+        "--ck-body-background-tertiary": "#1c282d", // Slightly darker than dark-300
       }}
     />
   );
