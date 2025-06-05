@@ -273,7 +273,7 @@ const PricingPlans = ({ userId }: PricingPlansProps) => {
                     userId={userId || ''}
                     planId="pro-plan"
                     planName="Pro"
-                    amount="39"
+                    amount="49"
                     walletAddress={walletAddress}
                     onSuccess={() => {
                       setPurchaseStatus("success");

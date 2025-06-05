@@ -92,38 +92,61 @@ export function DaimoPlanPayment({
     );
   }
 
-  // Create custom styled button that wraps the DaimoPayButton
   return (
-    <div className="relative w-full">
-      {/* Custom styled button to match app styling */}
-      <button 
-        className="w-full bg-primary-200 hover:bg-primary-200/90 text-dark-100 font-medium py-2.5 px-4 rounded"
-      >
-        Purchase {planName} Plan
-      </button>
-      
-      {/* Position the DaimoPayButton over our custom button but make it transparent */}
-      <div className="absolute inset-0 opacity-0 w-full h-full">
-        <DaimoPayButton
-          appId="pay-demo" // Replace with your actual Daimo app ID in production
-          intent={`Purchase ${planName} Plan`}
-          toAddress={walletAddress}
-          toChain={8453} // Base mainnet
-          toUnits={amount} // Amount in USDC
-          toToken={USDC_ADDRESS}
-          closeOnSuccess
-          mode="dark"
-          theme="rounded"
-          externalId={`${userId}-${planId}-${Date.now()}`}
-          metadata={{
-            userId: userId,
-            planId: planId,
-            planName: planName
-          }}
-          onPaymentCompleted={handlePaymentCompleted}
-          onPaymentBounced={handlePaymentBounced}
-        />
-      </div>
-    </div>
+    <DaimoPayButton
+      appId="pay-demo" // Replace with your actual Daimo app ID in production
+      intent={`Purchase ${planName} Plan`}
+      toAddress={walletAddress}
+      toChain={8453} // Base mainnet
+      toUnits={amount} // Amount in USDC
+      toToken={USDC_ADDRESS}
+      closeOnSuccess
+      mode="dark"
+      theme="rounded"
+      externalId={`${userId}-${planId}-${Date.now()}`}
+      metadata={{
+        userId: userId,
+        planId: planId,
+        planName: planName
+      }}
+      onPaymentCompleted={handlePaymentCompleted}
+      onPaymentBounced={handlePaymentBounced}
+      customTheme={{
+        // Global theme
+        "--ck-accent-color": "#65bdcc", // primary-200 from globals.css
+        "--ck-accent-text-color": "#020808", // dark-100 from globals.css
+        "--ck-font-family": "'Outfit', sans-serif", // Outfit font from layout
+        "--ck-body-color": "#d9f2f6", // light-100 from globals.css
+        "--ck-border-radius": "0.625rem", // --radius from globals.css
+        
+        // Connect button styling
+        "--ck-connectbutton-font-size": "1rem",
+        "--ck-connectbutton-border-radius": "0.625rem",
+        "--ck-connectbutton-color": "#020808", // dark-100 - text color
+        "--ck-connectbutton-background": "#65bdcc", // primary-200 from globals.css
+        "--ck-connectbutton-box-shadow": "none",
+        
+        // Hover state
+        "--ck-connectbutton-hover-color": "#020808", // dark-100
+        "--ck-connectbutton-hover-background": "#4a9caa", // light-600 from globals.css
+        "--ck-connectbutton-hover-box-shadow": "0 2px 8px rgba(0, 0, 0, 0.2)",
+        
+        // Active state (when pressed)
+        "--ck-connectbutton-active-color": "#020808",
+        "--ck-connectbutton-active-background": "#2a5c66", // light-800 from globals.css
+        "--ck-connectbutton-active-box-shadow": "inset 0 1px 2px rgba(0, 0, 0, 0.1)",
+        
+        // Modal styling
+        "--ck-overlay-background": "rgba(0, 0, 0, 0.7)", // Dark overlay with transparency
+        "--ck-overlay-backdrop-filter": "blur(5px)", // Subtle blur effect
+        "--ck-modal-box-shadow": "0 10px 25px rgba(0, 0, 0, 0.3)", // Subtle shadow for depth
+        "--ck-body-background": "#272f33", // dark-200 from globals.css
+        "--ck-body-background-transparent": "rgba(39, 47, 51, 0.95)", // dark-200 with transparency
+        "--ck-body-background-secondary": "#243339", // dark-300 from globals.css
+        "--ck-body-background-secondary-hover-background": "#2a5c66", // light-800 from globals.css
+        "--ck-body-background-secondary-hover-outline": "#4a9caa", // light-600 from globals.css
+        "--ck-body-background-tertiary": "#1c282d", // Slightly darker than dark-300
+      }}
+    />
   );
 }
