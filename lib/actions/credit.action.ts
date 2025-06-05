@@ -76,7 +76,8 @@ export async function getUserCredits(userId: string): Promise<UserCredit | null>
     return {
       ...doc.data(),
       id: doc.id,
-      purchaseDate: doc.data().purchaseDate.toDate()
+      purchaseDate: doc.data().purchaseDate.toDate(),
+      expirationDate: doc.data().expirationDate.toDate()
     } as UserCredit;
   } catch (error) {
     console.error("Error getting user credits:", error);
