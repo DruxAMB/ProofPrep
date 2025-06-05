@@ -159,7 +159,7 @@ const LandingPage = () => {
               <span className="text-primary-100 font-bold">1</span>
             </div>
             <h3 className="text-xl font-medium mb-2">Choose Your Role</h3>
-            <p className="text-light-300">Select the job role you're preparing for and customize your practice session</p>
+            <p className="text-light-300">Select the job role you&apos;re preparing for and customize your practice session</p>
           </div>
           
           <div className="flex flex-col items-center text-center p-6">

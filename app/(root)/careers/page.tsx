@@ -115,7 +115,7 @@ export default function CareersPage() {
           Join Our Team
         </h1>
         <p className="text-xl text-light-300 max-w-3xl mb-8">
-          We're on a mission to revolutionize interview preparation with AI. Join us in helping millions of people land their dream jobs.
+          We&apos;re on a mission to revolutionize interview preparation with AI. Join us in helping millions of people land their dream jobs.
         </p>
         <div className="flex flex-wrap gap-5 mb-12">
           <div className="flex items-center gap-2 px-4 py-2 bg-dark-300/30 rounded-full">

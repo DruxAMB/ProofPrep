@@ -86,7 +86,7 @@ const PricingPlans = ({ userId }: PricingPlansProps) => {
     return () => {
       isMounted = false;
     };
-  }, [userId, isAuthenticated]); // Remove toast from dependencies
+  }, [userId, isAuthenticated, isWalletLoading, toast]); // Remove toast from dependencies
   // Redirect to sign-in for unauthenticated users
   const redirectToSignIn = () => {
     router.push(`/sign-in?redirect=/pricing`);

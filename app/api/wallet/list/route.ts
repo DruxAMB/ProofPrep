@@ -17,13 +17,13 @@ const publicClient = createPublicClient({
  * For development, this endpoint is accessible to everyone
  * TODO: Add admin-only authentication before production
  */
-export async function GET(request: Request) {
+export async function GET() {
   try {
     // Authentication check removed for development
     // Will add proper admin-only authentication later
     
     console.log('Starting CDP wallet listing...');
-    let walletAddresses = [];
+    const walletAddresses = [];
     let totalBalance = BigInt(0);
     
     // Get initial response

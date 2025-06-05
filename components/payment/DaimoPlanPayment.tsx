@@ -36,7 +36,7 @@ export function DaimoPlanPayment({
   const [processing, setProcessing] = useState(false);
 
   // Handle successful payment
-  const handlePaymentCompleted = async (event: any) => {
+  const handlePaymentCompleted = async () => {
     if (processing) return; // Prevent duplicate processing
     
     setProcessing(true);
